@@ -1,0 +1,53 @@
+<mat-sidenav-container>
+
+  <!-- sidenav bar displayed only screensize reduced -->
+  <mat-sidenav class="sideBarNav" [(opened)]="open">
+    <ng-template [ngTemplateOutlet]="navigationItems"></ng-template>
+  </mat-sidenav>
+
+  <!-- sidenav content which displayed in browser -->
+  <mat-sidenav-content>
+    <!-- navigation bar -->
+    <mat-toolbar color="primary" class="navbar">
+      <div>
+        <button id="menuButton" (click)="open = !open">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <span>{{title}}</span>
+      </div>
+      <div class="navigation" *ngIf="!open">
+        <ng-template [ngTemplateOutlet]="navigationItems"></ng-template>
+      </div>
+    </mat-toolbar>
+    
+
+    <router-outlet></router-outlet>
+
+
+    <mat-toolbar color="primary" class="footer">
+      <div>
+        <span>
+          <mat-icon>copyright</mat-icon> Manikandan
+        </span>
+      </div>
+    </mat-toolbar>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+<ng-template #navigationItems>
+  <a routerLink='/home' *ngIf="homePage">Home</a>
+  <a routerLink='/register' *ngIf='!homePage'>Register</a>
+  <a routerLink='/login' *ngIf='!homePage'>Login</a>
+  <span *ngIf="homePage">
+    <button mat-flat-button [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger"
+      (mouseenter)="menuTrigger.openMenu()">Manikandan</button>
+
+    <mat-menu #menu="matMenu" [overlapTrigger]="false">
+      <nav class="nav-link" (mouseleave)="menuTrigger.closeMenu()">
+        <a routerLink='updateprofile'>Update Profile</a>
+        <a routerLink=''>Change Password</a>
+        <a (click)="logout()">Logout</a>
+      </nav>
+    </mat-menu>
+  </span>
+</ng-template>

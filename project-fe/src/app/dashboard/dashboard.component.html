@@ -1,0 +1,19 @@
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Working At</th>
+        <th>Status</th>
+    </tr>
+    <tr *ngFor="let user of dataForApproval">
+        <td>{{user.name}}</td>
+        <td>{{user.email}}</td>
+        <td>{{user.workingAt}}</td>
+        <td>
+            <button mat-raised-button (click)='approve(user._id)'> Approve </button>
+            <button mat-raised-button (click)='deny(user._id)'> Deny </button>
+        </td>
+    </tr>
+</table>
+
+<button mat-raised-button (click)="submitAllActions()">Submit All Actions</button>

@@ -1,0 +1,37 @@
+<div fxLayoutAlign="center center" class="main-div">
+
+  <mat-card>
+    <mat-card-content>
+      <mat-toolbar color="primary">{{formName}}</mat-toolbar>
+      <form fxLayout="column" class="registration-form" [formGroup]="courseForm">
+        <mat-error *ngIf="invalidForm">Please fill the form correctly</mat-error>
+        <mat-form-field appearance="outline">
+          <mat-label>Course Name</mat-label>
+          <input matInput formControlName='courseName'>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Topic Name</mat-label>
+          <input matInput formControlName='topicName' [disabled]='disable'>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Document Link</mat-label>
+          <input matInput formControlName='documentLink'>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Toturial Link</mat-label>
+          <input matInput formControlName='toturialLink'>
+        </mat-form-field>
+
+        <!-- <button type="button" *ngIf="addButton" mat-raised-button (click)="fileInput.click()">Choose File</button>
+        <input hidden (change)="onFileSelected($event)" #fileInput type="file"> -->
+
+        <button mat-raised-button *ngIf="isTopicAddForm" type="button" (click)="addTopic()">Add Topic</button>
+        <button mat-raised-button *ngIf="!isTopicAddForm" type="button" (click)="updateTopic()">Update Topic</button>
+        
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

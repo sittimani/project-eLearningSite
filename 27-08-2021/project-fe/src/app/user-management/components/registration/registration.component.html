@@ -1,0 +1,98 @@
+<div fxLayoutAlign="center center" class="main-div">
+
+  <mat-card>
+    <mat-card-content>
+      <mat-toolbar color="primary">{{formName}}</mat-toolbar>
+      
+      <form fxLayout="column" class="registration-form" [formGroup]="registrationForm">
+        <span class='error-message' *ngIf="invalidForm">{{errorMessage}}</span>
+        <mat-form-field appearance="outline">
+          <mat-label>Name</mat-label>
+          <input matInput formControlName='name'>
+          <span class='error-message' *ngIf='name?.invalid && name?.touched'>
+            <span class='error-message' *ngIf="name.errors?.required">Name is required</span>
+            <span class='error-message' *ngIf="name.errors?.minlength">Minimum 3 letter required</span>
+            <span class='error-message' *ngIf="name.errors?.pattern">Name must not have numbers</span>
+          </span>
+        </mat-form-field>
+
+
+        <mat-form-field appearance="outline">
+          <mat-label>Age</mat-label>
+          <input matInput formControlName='age'>
+          <span class='error-message' *ngIf='age?.invalid && age?.touched'>
+            <span class='error-message' *ngIf="age.errors?.required">Age is required</span>
+            <span class='error-message' *ngIf="age.errors?.minlength">Minimum 1 age required</span>
+          </span>
+        </mat-form-field>
+
+        <mat-radio-group formControlName='gender'>
+          <mat-radio-button value='male'>Male</mat-radio-button>
+          <mat-radio-button value='female'>Female</mat-radio-button>
+        </mat-radio-group>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Phone</mat-label>
+          <input matInput formControlName='phone'>
+          <span class='error-message' *ngIf='phone?.invalid && phone?.touched'>
+            <span class='error-message' *ngIf="phone.errors?.required">Phone is required</span>
+            <span class='error-message' *ngIf="phone.errors?.minlength">10 numbers required</span>
+            <span class='error-message' *ngIf="phone.errors?.maxlength">Maximum 10 numbers allowed</span>
+          </span>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" *ngIf="!updateForm">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName='email'>
+          <span class='error-message' *ngIf='email?.invalid && email?.touched'>
+            <span class='error-message' *ngIf="email.errors?.required">Email is required</span>
+            <span class='error-message' *ngIf="email.errors?.pattern">Invalid Email Addess</span>
+          </span>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" *ngIf="!addUserButton || updateForm && isProfessorUpdate">
+          <mat-label>Working At</mat-label>
+          <input matInput formControlName='workingAt'>
+          <span class='error-message' *ngIf='work?.invalid && work?.touched'>
+            <span class='error-message' *ngIf="work.errors?.required">Working position is required</span>
+          </span>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" *ngIf="!updateForm">
+          <mat-label>Password</mat-label>
+          <input matInput [type]="hide ? 'password' : 'text'" formControlName='password'>
+          <button mat-icon-button matSuffix (click)="hide = !hide">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+          <span class='error-message' *ngIf='password?.invalid && password?.touched'>
+            <span class='error-message' *ngIf="password.errors?.required">password is required</span>
+            <span class='error-message' *ngIf="password.errors?.minlength">Password should be 8 charcters minimum</span>
+          </span>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" *ngIf="!updateForm">
+          <mat-label>Confirm Password</mat-label>
+          <input type="password" matInput formControlName='confirmPassword'>
+          <span class='error-message' *ngIf='confirmPassword?.invalid && password?.touched'>
+            <span class='error-message' *ngIf="confirmPassword.errors?.required">confirmPassword is required</span>
+            <span class='error-message' *ngIf="confirmPassword.errors?.minlength">confirmPassword should be 8 charcters minimum</span>
+          </span>
+        </mat-form-field>
+
+        <!-- <button type="button" *ngIf="addButton" mat-raised-button (click)="fileInput.click()">Choose File</button>
+        <input hidden (change)="onFileSelected($event)" #fileInput type="file"> -->
+        <button mat-raised-button *ngIf="!updateForm && addUserButton" type="button" (click)="addnewUser()">Register as
+          Student</button>
+        <button mat-raised-button *ngIf="!updateForm && !addUserButton" type="button" (click)="addNewProfessor()">Register
+          as
+          Professor</button>
+        <br>
+        <button mat-raised-button *ngIf=' !updateForm && addUserButton' (click)="triggerProfessorRegister()">Go to
+          professor Register</button>
+        <button mat-raised-button *ngIf="!updateForm && !addUserButton" (click)="triggerStudentRegister()">Go to Student
+          Register</button>
+        <button mat-raised-button *ngIf='updateForm' type="button" (click)='updateUser()'>Update User</button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

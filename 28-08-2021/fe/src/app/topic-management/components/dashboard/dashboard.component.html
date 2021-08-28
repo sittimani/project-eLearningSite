@@ -1,0 +1,18 @@
+<div fxFlex='100%' fxFlexFill class="container">
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Working At</th>
+            <th>Status</th>
+        </tr>
+        <tr *ngFor="let user of dataForApproval">
+            <td>{{user.name}}</td>
+            <td>{{user.email}}</td>
+            <td>{{user.workingAt}}</td>
+            <td>
+                <button class="mat-raised-button" (click)="Approve(user._id)">Approve</button>
+            </td>
+        </tr>
+    </table>
+</div>

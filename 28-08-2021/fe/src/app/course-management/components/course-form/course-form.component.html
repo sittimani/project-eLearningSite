@@ -1,0 +1,49 @@
+<div fxLayoutAlign="center center" class="main-div">
+
+  <mat-card>
+    <mat-card-content>
+      <mat-toolbar color="primary">{{formName}}</mat-toolbar>
+      
+      <form fxLayout="column" class="registration-form" [formGroup]="courseForm">
+        
+        <span class='error-message' *ngIf="invalidForm">Please fill the form correctly</span>
+        
+        <mat-form-field appearance="outline">
+          <mat-label>Course Name</mat-label>
+          <input matInput formControlName='courseName'>
+          <span class='error-message' *ngIf='courseName?.invalid && courseName?.touched'>
+            <span class='error-message' *ngIf="courseName.errors?.required">Coursename is required</span>
+            <span class='error-message' *ngIf="courseName.errors?.minlength">Minimum 3 letter required</span>
+          </span>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Overview</mat-label>
+          <input matInput formControlName='overview'>
+          <span class='error-message' *ngIf='overview?.invalid && overview?.touched'>
+            <span class='error-message' *ngIf="overview.errors?.required">Overview is required</span>
+            <span class='error-message' *ngIf="overview.errors?.minlength">overview should be minimum 30 characters</span>
+          </span>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Brief Description</mat-label>
+          <textarea matInput 
+            cdkTextareaAutosize
+            #autosize="cdkTextareaAutosize"  
+            cdkAutosizeMaxRows="10" 
+            formControlName='description'></textarea>
+          <span class='error-message' *ngIf='description?.invalid && description?.touched'>
+            <span class='error-message' *ngIf="description.errors?.required">Description is required</span>
+            <span class='error-message' *ngIf="description.errors?.minlength">Description must be minimum 200 characters</span>
+          </span>
+        </mat-form-field>
+
+        <button type="button" mat-raised-button (click)="fileInput.click()">Choose File</button>
+        <input hidden (change)="onFileSelected($event)" #fileInput type="file">
+        
+        <button mat-raised-button type="button" (click)="addnewCourse()">Add Course</button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

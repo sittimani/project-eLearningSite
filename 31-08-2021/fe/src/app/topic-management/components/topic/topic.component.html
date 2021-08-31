@@ -1,0 +1,29 @@
+<div fxFlex='100%' fxFlexFill class="container">
+    <mat-card>
+        <mat-card-header fxLayoutAlign = 'center'>
+            <mat-card-title>{{courseName | uppercase}}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div class="text-div"> {{overView.description}} </div>
+            <br>
+            <table>
+                <tr>
+                    <th>Topic Name</th>
+                    <th>Document Link</th>
+                    <th>Toturial Link</th>
+                    <th *ngIf="roles.updateDocument">Update Topic</th>
+                </tr>
+                <tr *ngFor="let topic of topicsDisplayed; let i = index">
+                    <td>{{keysDisplayed[i]}}</td>
+                    <td><a [href]="topic.documentLink" target="_blank">Click Here</a></td>
+                    <td><a [href]="topic.toturialLink" target="_blank">Click Here</a></td>
+                    <td *ngIf="roles.updateDocument"><button mat-raised-button (click)='updateTopic(i)'>Update</button></td>
+                </tr>
+            </table>
+            <br><br>
+            <hr>
+        </mat-card-content>
+        <mat-card-actions>  
+        </mat-card-actions>
+    </mat-card>
+</div>

@@ -1,0 +1,67 @@
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { DialogService } from 'src/app/core/shared/service/dialog.service';
+import { passwordMatchValidator } from 'src/app/core/shared/validators/password.validator';
+import { AuthService } from '../../shared/service/auth.service';
+
+@Component({
+  selector: 'app-password',
+  templateUrl: './password.component.html',
+  styleUrls: ['./password.component.css']
+})
+export class PasswordComponent implements OnInit {
+
+  passwordForm!: FormGroup
+  isInvalidForm = false;
+  hide = true
+  errorMessage = ''
+  title = 'Password Reset Form'
+  responseData!: any;
+  id!: any
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private auth: AuthService,
+    private router: Router,
+    private toastr: ToastrService) {
+
+    this.passwordForm = this.formBuilder.group({
+      oldPassword: ['', [Validators.required, Validators.minLength(8)]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
+      confirmPassword: ['', [Validators.required, Validators.minLength(8)]]
+    }, { validator: passwordMatchValidator('password', 'confirmPassword') })
+  }
+
+  ngOnInit(): void {
+    this.auth.loggedIn()
+    this.auth.verifyToken().subscribe(x => {
+      this.responseData = x;
+      this.id = this.responseData.users._id
+    })
+  }
+
+  changePassword() {
+    var value = {
+      id: this.id,
+      oldPassword: this.passwordForm.get('oldPassword')?.value,
+      newPassword: this.passwordForm.get('password')?.value
+    }
+    this.auth.updatePassword(value).subscribe(x => {
+      this.responseData = x;
+      if (this.responseData.success === true) {
+        this.toastr.success(this.responseData.message, "Success")
+        this.router.navigate(['home'])
+      } else {
+        this.errorMessage = this.responseData.message
+        this.isInvalidForm = true;
+      }
+    })
+  }
+  
+  public getField(name: any) {
+    return this.passwordForm.get(name) as FormControl
+  }
+
+}

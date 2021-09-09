@@ -1,0 +1,52 @@
+<div fxLayoutAlign="center center" class="main-div">
+
+  <mat-card>
+    <mat-card-content>
+      <mat-toolbar color="primary">{{title}}</mat-toolbar>
+      <form fxLayout="column" class="registration-form" [formGroup]="courseForm">
+        <mat-error *ngIf="isInvalidForm">{{errorMessage}}</mat-error>
+        <mat-form-field appearance="outline">
+          <mat-label>Course Name</mat-label>
+          <input matInput formControlName='courseName'>
+        </mat-form-field>
+        <span class='error-message' *ngIf='getField("courseName")?.invalid && getField("courseName")?.touched'>
+          <span class='error-message' *ngIf="getField('courseName').errors?.required">Course Name is required</span>
+          <span class='error-message' *ngIf="getField('courseName').errors?.minlength">Minimum 3 letters</span>
+        </span>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Topic Name</mat-label>
+          <input matInput formControlName='topicName'>
+        </mat-form-field>
+        <span class='error-message' *ngIf='getField("topicName")?.invalid && getField("topicName")?.touched'>
+          <span class='error-message' *ngIf="getField('topicName').errors?.required">Topic Name is required</span>
+          <span class='error-message' *ngIf="getField('topicName').errors?.minlength">Minimum 5 letters</span>
+        </span>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Document Link</mat-label>
+          <input matInput formControlName='documentLink'>
+        </mat-form-field>
+        <span class='error-message' *ngIf='getField("documentLink")?.invalid && getField("documentLink")?.touched'>
+          <span class='error-message' *ngIf="getField('documentLink').errors?.required">Document link is required</span>
+          <span class='error-message' *ngIf="getField('documentLink').errors?.minlength">Minimum 10 letters</span>
+        </span>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Toturial Link</mat-label>
+          <input matInput formControlName='toturialLink'>
+        </mat-form-field>
+        <span class='error-message' *ngIf='getField("toturialLink")?.invalid && getField("toturialLink")?.touched'>
+          <span class='error-message' *ngIf="getField('toturialLink').errors?.required">toturialLink is required</span>
+          <span class='error-message' *ngIf="getField('toturialLink').errors?.minlength">Minimum 10 letters</span>
+        </span>
+
+        <button mat-raised-button color="primary" *ngIf="isTopicAddForm" type="button" (click)="addTopic()">Add Topic</button>
+        <button mat-raised-button color="primary" *ngIf="!isTopicAddForm" type="button" (click)="updateTopic()">Update Topic</button>
+        <br>
+        <button mat-raised-button type="button" color="primary" (click)='cancel()'>Cancel</button>
+
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

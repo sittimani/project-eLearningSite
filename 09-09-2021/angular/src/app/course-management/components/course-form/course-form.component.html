@@ -1,0 +1,51 @@
+<div fxLayoutAlign="center center" class="main-div">
+
+  <mat-card>
+    <mat-card-content>
+      <mat-toolbar color="primary">{{title}}</mat-toolbar>
+
+      <form fxLayout="column" class="course-form" [formGroup]="courseForm">
+
+        <span class='error-message' *ngIf="isInvalidForm">{{errorMessage}}</span>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Course Name</mat-label>
+          <input matInput formControlName='courseName'>
+        </mat-form-field>
+        <span class='error-message' *ngIf='getField("courseName")?.invalid && getField("courseName")?.touched'>
+          <span class='error-message' *ngIf="getField('courseName').errors?.required">Coursename is required</span>
+          <span class='error-message' *ngIf="getField('courseName').errors?.minlength">Minimum 3 letter required</span>
+        </span>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Overview</mat-label>
+          <input matInput formControlName='overview'>
+        </mat-form-field>
+        <span class='error-message' *ngIf='getField("overview")?.invalid && getField("overview")?.touched'>
+          <span class='error-message' *ngIf="getField('overview').errors?.required">Overview is required</span>
+          <span class='error-message' *ngIf="getField('overview').errors?.minlength">overview should be minimum 30
+            characters</span>
+        </span>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Brief Description</mat-label>
+          <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMaxRows="10"
+            formControlName='description'></textarea>
+        </mat-form-field>
+        <span class='error-message' *ngIf='getField("description")?.invalid && getField("description")?.touched'>
+          <span class='error-message' *ngIf="getField('description').errors?.required">Description is required</span>
+          <span class='error-message' *ngIf="getField('description').errors?.minlength">Description must be minimum 200
+            characters</span>
+        </span>
+
+        <button type="button" class="fileInput"  mat-raised-button (click)="fileInput.click()">Choose
+          File</button>
+        <input hidden (change)="onFileSelected($event)" #fileInput type="file">
+        <span class="error-message" *ngIf="!isFileUploaded">Please select png, jpg or jpeg file alone.</span>
+        <button mat-raised-button type="button" color="primary" (click)="addnewCourse()">Add Course</button>
+        <br>
+        <button mat-raised-button type="button" color="primary" (click)='cancel()'>Cancel</button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

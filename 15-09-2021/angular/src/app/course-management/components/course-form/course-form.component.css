@@ -1,0 +1,23 @@
+.main-div mat-card{
+    padding:0;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 400px;
+}
+
+.course-form{
+    padding:20px
+}
+
+.fileInput{
+    margin-bottom: 20px;
+}
+
+.error-message{
+    color: red;
+    margin-bottom: 10px;
+}
+
+.links{
+    margin-top: 10px;
+}

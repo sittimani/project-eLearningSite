@@ -1,65 +1,72 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { BehaviorSubject, Observable } from "rxjs";
+import {
+  LoginCreditionals,
+  LoginResponse,
+  ResetPassword,
+  userDetails,
+  UserInformation
+} from "src/app/core";
+import { environment } from "src/environments/environment";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
+
 export class AuthService {
 
-  roles = {
-    readDocument: true,
-    createDocument: false,
-    updateDocument: false,
-    deleteDocument: false,
-    createCourse: false
+  private serverAddress = environment.serverAddress
+  private behSubject: BehaviorSubject<boolean>;
+  public behSubject$: Observable<boolean>
+
+  constructor(private http: HttpClient) {
+    this.behSubject = new BehaviorSubject(Boolean(false))
+    this.behSubject$ = this.behSubject.asObservable()
   }
-  subject = new Subject()
-  private serverAddress = 'http://localhost:8080/'
 
-  constructor(private http:HttpClient) { }
-
-  loggedIn(){
-    if(localStorage.getItem('token')){
-      return true;
-    }else{
-      return false;
+  public loggedIn(): void {
+    if (this.getToken()) {
+      this.behSubject.next(true)
+    } else {
+      this.behSubject.next(false)
     }
   }
 
-  getToken(){
+  public getToken(): string | null {
     return localStorage.getItem("token")
   }
 
-  verifyToken(){
-    return this.http.get('http://localhost:8080/verifyToken');
+  public loginAsUser(value: LoginCreditionals): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(this.serverAddress + "login", value)
   }
 
-  loginAsProfessor(value: any){
-    return this.http.post(this.serverAddress + 'professorLogin', value);
+  public registerAsUser(value: UserInformation): Observable<string> {
+    return this.http.post<string>(this.serverAddress + "register", value)
   }
 
-  loginAsStudent(value: any){
-    return this.http.post(this.serverAddress + 'studentLogin', value)
+  public updatePassword(value: ResetPassword): Observable<string> {
+    return this.http.post<string>(this.serverAddress + "update-password", value)
   }
 
-  registerNewProfessor(value: any){
-    return this.http.post(this.serverAddress + 'professorRegister', value)
-  }
-  
-  registerNewStudent(value: any){
-    return this.http.post(this.serverAddress + 'studentRegister', value)
-    this.roles.readDocument = true;
-    this.roles.createDocument = true;
-    this.roles.updateDocument = true;
-    this.subject.next(1);
+  public forgotPassword(value: LoginCreditionals): Observable<string> {
+    return this.http.post<string>(this.serverAddress + "forgot-password", value)
   }
 
-  logoutUser(){
-    this.roles.readDocument = false;
-    this.roles.createCourse = false;
-    this.roles.updateDocument = false;
-    
-    this.subject.next(1);
+  public setToken(responseData: LoginResponse) {
+    localStorage.setItem("token", responseData.accessToken);
+    localStorage.setItem("user", JSON.stringify(responseData.user.users))
+    this.loggedIn()
+  }
+
+  public getUserDetails(): userDetails {
+    const details: any = localStorage.getItem("user")
+    const originalData = JSON.parse(details)
+    return originalData
+  }
+
+  public logOut(): void {
+    localStorage.clear()
+    this.loggedIn()
   }
 }

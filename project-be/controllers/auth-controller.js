@@ -1,77 +1,24 @@
-const getter = require('../service/getters')
-const professorLoginModel = require('../models/professorAuth')
-const studentLoginModel = require('../models/studentAuth')
+const authModel = require('../models/auth-model')
+const AuthService = require('../service/auth.service')
+const authService = new AuthService()
 
 module.exports = {
-    professorLogin: (request, response) => {
-        const email = request.body.email;
-        const password = request.body.password;
-        const role = request.body.role;
-        professorLoginModel.findOne({ email: email }, (error, data) => {
-            if (error) {
-                response.json(501)
-                response.json({ success: false, message: "Internal server problem" })
-            }
-            if (data == null) {
-                // response.json() // code for not fount
-                response.json({ success: false, message: "No user found" })
-            } else {
-                if (data.password != password) {
-                    // response.json() // for not valid creditionals
-                    response.json({ success: false, message: "Invalid password" })
-                } else if (data.role != role) {
-                    // response.statusCode = 401
-                    response.json({ success: false, message: "Unauthorized login" })
-                } else {
-                    console.log(data.role, role)
-                    // professor login
-                    if (data.verified == 'approved') {
-                        getter.getMyRole(request.body.role).then(data => {
-                            const responseData = getter.createToken(data, request.body);
-                            response.json({ success: true, message: "login successfully", data: responseData })
-                        }).catch(error => {
-                            response.statusCode = 501
-                            response.json({ success: false, message: "server problem" })
-                        })
-                    } else {
-                        // response.statusCode = 401
-                        response.json({ success: false, message: "Your request is not accepted yet!!!" })
-                    }
-                }
-            }
-        })
+    userLogin: async (request, response) => {
+        const res = await authService.login(request.body)
+        response.status(res.statusCode).json(res.message)
     },
+    updatePassword: async (request, response) => {
+        const res = await authService.updatePassword(request.body)
+        response.status(res.statusCode).json(res.message)
+    },
+    verifyUser: async (request, response) => {
+        const id = request.params.id;
+        const res = await authService.verify(id)
+        response.end(res)
+    },
+    forgotPassword: async (request, response) => {
+        const res = await authService.forgotPassword(request.body)
+        response.status(res.statusCode).json(res.message)
 
-    studentLogin: (request, response) => {
-        const email = request.body.email;
-        const password = request.body.password;
-        const role = request.body.role;
-        studentLoginModel.findOne({ email: email }, (error, data) => {
-            if (error) {
-                response.json(501)
-                response.json({ success: false, message: "Internal server problem" })
-            }
-            if (data == null) {
-                // response.json() // code for not fount
-                response.json({ success: false, message: "No user found" })
-            } else {
-                if (data.password != password) {
-                    // response.json() // for not valid creditionals
-                    response.json({ success: false, message: "Invalid password" })
-                } else if (data.role !== role) {
-                    response.statusCode = 401
-                    response.json({ success: false, message: "Unauthorized login" })
-                } else {
-                    // student login
-                    getter.getMyRole(request.body.role).then(data => {
-                        const responseData = getter.createToken(data, request.body);
-                        response.json({ success: true, message: "login successfully", data: responseData })
-                    }).catch(error => {
-                        response.statusCode = 501
-                        response.json({ success: false, message: "server problem" })
-                    })
-                }
-            }
-        })
     }
 }

@@ -1,63 +1,82 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { AuthService } from '../../shared/service/auth.service';
+import { Component, OnInit } from "@angular/core";
+import { FormGroup, FormBuilder, Validators, FormControl } from "@angular/forms";
+import { Router } from "@angular/router";
+import { ToastrService } from "ngx-toastr";
+import { LoginCreditionals, LoginResponse, UserErrors } from "src/app/core";
+import { AuthService } from "../..";
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  selector: "app-login",
+  templateUrl: "./login.component.html",
+  styleUrls: ["./login.component.css"]
 })
 export class LoginComponent implements OnInit {
 
-  studentLogin: boolean = true
-  hide:boolean = true
-  invalidForm:boolean = false
-  formName = 'Login Form'
-  responseData:any
+  public isStudentLogin = true;
+  public isHide = true;
+  public title = "Login Form";
+  public loginForm: FormGroup;
+  public isForgotPassword: boolean = false;
 
-  loginForm:FormGroup
-  constructor(private formBuilder: FormBuilder, private router:Router, private auth: AuthService) {
-    const href = this.router.url;
-    if(href.includes('topic')){
-      this.studentLogin = false
-    }
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private auth: AuthService,
+    private toastr: ToastrService
+  ) {
     this.loginForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]]
+      email: ["", [Validators.required, Validators.email]],
+      password: ["", [Validators.required, Validators.minLength(8)]]
     })
-   }
+    if (this.auth.getToken()) {
+      this.auth.loggedIn();
+      this.router.navigate(["home"]);
+    }
+  }
 
   ngOnInit(): void {
+    if (this.router.url.includes("forgotpassword")) {
+      this.isForgotPassword = true;
+      this.title = "Reset Password";
+      this.loginForm.get("password")?.disable();
+    }
   }
 
-  loginAsStudent(){
-    var value = this.loginForm.value;
-    value.role = 'student'
-    this.auth.loginAsStudent(value).subscribe(x => {
-      this.responseData = x;
-      console.log(this.responseData)
-    })
-    // this.auth.checkStudentCreditionals(this.loginForm.value)
-    // this.router.navigate(['home'])
+  public logIn(): void {
+    if (this.loginForm.valid) {
+      let value: LoginCreditionals = this.loginForm.value;
+      this.auth.loginAsUser(value).subscribe((response: LoginResponse) => {
+        this.setToken(response);
+      })
+    } else {
+      this.toastr.error(UserErrors.InvalidForm, "Error");
+    }
   }
 
-  loginAsProfessor(){
-    var value = this.loginForm.value;
-    value.role = 'professor'
-    this.auth.loginAsProfessor(value).subscribe(x => {
-      this.responseData = x;
-      console.log(this.responseData)
-    })
-    // this.auth.checkProfessorCreditionals(this.loginForm.value)
-    // this.router.navigate(['login'])
+  private setToken(x: LoginResponse): void {
+    const responseData = x;
+    this.auth.setToken(responseData);
+    this.router.navigate(["home"]);
+    this.toastr.success("Logged in successfully", "Success");
   }
 
-  triggerProfessorLogin(){
-    this.router.navigate(['topic/login'])
+  public resetPassword(): void {
+    if (this.loginForm.valid) {
+      const email =  this.loginForm.get("email")?.value;
+      this.auth.forgotPassword({ email: email}).subscribe((response: string) => {
+        this.toastr.success(response, "Success");
+        this.router.navigate(["login"]);
+      })
+    } else {
+      this.toastr.error(UserErrors.InvalidForm, "Error");
+    }
   }
 
-  triggerStudentLogin(){
-    this.router.navigate(['login'])
+  public triggerForgotPassword(): void {
+    this.router.navigate(["forgotpassword"]);
+  }
+
+  public getField(name: string): FormControl {
+    return this.loginForm.get(name) as FormControl;
   }
 }

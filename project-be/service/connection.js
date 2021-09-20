@@ -1,17 +1,25 @@
 const mongoose = require('mongoose')
+var _db;
 
 module.exports = {
-    connectToDB: async function (Dbname) {
-        const db = 'mongodb://127.0.0.1:27017/' + Dbname
-
+    connectToDB: async function() {
+        const db = process.env.DB_ADDRESS + process.env.DBNAME
+        const options = {
+            socketTimeoutMS: 30000,
+            keepAlive: true,
+            useFindAndModify: false,
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        }
         return new Promise((resolve, reject) => {
-            mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true }, error => {
+            mongoose.connect(db, options, error => {
                 if (error) {
-                    reject(0)
+                    reject(false)
                 } else {
-                    resolve(db)
+                    resolve(true)
                 }
             })
         })
-    }
+    },
 }
+global.mongoose = mongoose;

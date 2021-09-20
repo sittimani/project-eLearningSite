@@ -1,0 +1,14 @@
+button {
+    margin-right: 5px;
+}
+
+table {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.no-items {
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+}

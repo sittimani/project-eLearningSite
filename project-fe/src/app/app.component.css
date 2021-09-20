@@ -4,7 +4,8 @@
 
 a{
     padding: 10px;
-    margin-right: 20px;
+    margin-right: 10px;
+    font-size: 15px;
     border-radius: 3px;
     text-decoration: none;
     color: white;
@@ -25,6 +26,7 @@ a:hover{
     color: black;
     margin-left: 10px;
 }
+
 
 mat-sidenav-container{
     height: 95%;
@@ -47,17 +49,26 @@ mat-sidenav{
 }
 
 .footer{
-    height: 60px;
     align-content: center;
     justify-content: center;
 }
 
-.footer span{
-    padding-bottom: 10px;
+
+.loader-container{
+    position: absolute;
+    height: 150%;
+    width: 97%;
+    background: black;
+    opacity: 0.9;
+    z-index: 99;
+}
+mat-spinner{
+    top: 30%;
+    left: 50%;
 }
 
 
-@media screen and (max-width:532px) {
+@media screen and (max-width:732px) {
     #menuButton{
         display: inline-block;
         margin-right: 10px;

@@ -1,28 +1,24 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MaterialModule } from '../material/material.module';
-import { LoginComponent } from './components/login/login.component';
-import { RegistrationComponent } from './components/registration/registration.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from "@angular/common/http";
-
-
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { LoginComponent } from "./components/login/login.component";
+import { RegisterComponent } from "./components/register/register.component";
+import { PasswordComponent } from "./components/password/password.component";
+import { MaterialModule } from "../material/material.module";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { UserManagementRoutingModule } from "./user-management-routing.module";
 
 @NgModule({
   declarations: [
     LoginComponent,
-    RegistrationComponent
+    RegisterComponent,
+    PasswordComponent
   ],
   imports: [
     CommonModule,
     MaterialModule,
-    HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
-  ],
-  exports: [
-    LoginComponent,
-    RegistrationComponent
+    ReactiveFormsModule,
+    UserManagementRoutingModule
   ]
 })
 export class UserManagementModule { }

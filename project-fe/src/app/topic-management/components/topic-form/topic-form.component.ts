@@ -1,60 +1,116 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { AuthService } from 'src/app/user-management/shared/service/auth.service';
-import { TopicService } from '../../shared/service/topic.service';
+import { Component, OnInit } from "@angular/core";
+import { FormGroup, FormBuilder, Validators, FormControl } from "@angular/forms";
+import { Router, ActivatedRoute } from "@angular/router";
+import { ToastrService } from "ngx-toastr";
+import { Topic, TopicDetail, userDetails, UserErrors } from "src/app/core";
+import { AuthService } from "src/app/user-management";
+import { TopicService } from "../..";
 
 @Component({
-  selector: 'app-topic-form',
-  templateUrl: './topic-form.component.html',
-  styleUrls: ['./topic-form.component.css']
+  selector: "app-topic-form",
+  templateUrl: "./topic-form.component.html",
+  styleUrls: ["./topic-form.component.css"]
 })
 export class TopicFormComponent implements OnInit {
 
-  addCourseForm: boolean = true;
-  invalidForm: boolean = false;
-  formName: string = 'Topic Adding Form'
-  disable: boolean = false;
-  roles;
+  public isTopicAddForm = true;
+  public title = "Topic Adding Form"
+  public url!: string;
+  private courseName!: string
+  private teacherID!: string
+  public courseForm: FormGroup
 
-  courseForm: FormGroup
-  
-  constructor(private formBuilder: FormBuilder, private auth: AuthService, private router: Router, private topic: TopicService) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private auth: AuthService,
+    private router: Router,
+    private topic: TopicService,
+    private activatedRoute: ActivatedRoute,
+    private toastr: ToastrService
+  ) {
     this.courseForm = this.formBuilder.group({
-      courseName: ['', [Validators.required]],
-      topicName: ['', [Validators.required]],
-      documentLink: ['', [Validators.required]],
-      toturialLink: ['', [Validators.required]]
+      courseName: ["", [Validators.required, Validators.minLength(3)]],
+      topicName: ["", [Validators.required, Validators.minLength(5)]],
+      documentLink: ["", [Validators.required, Validators.minLength(5)]],
+      tutorialLink: ["", [Validators.required, Validators.minLength(5)]]
     })
-    this.roles = this.auth.roles;
-    if(this.roles.createDocument == false || this.roles.updateDocument == false){
-      this.router.navigate(['professor/login'])
-    }
-
-    this.topic.behaviorSubject$.subscribe(x => {
-      if(x !== 'no'){
-        this.addCourseForm = false;
-        this.formName = 'Update Topic'
-        this.courseForm.patchValue(x)
-        console.log(x)
-        this.courseForm.controls['courseName'].disable()
-        this.courseForm.controls['topicName'].disable()
-      }else{
-        this.formName = 'Topic Adding Form'
-        this.router.navigate(['professor/addtopic'])
-      }
-    })
-   }
+  }
 
   ngOnInit(): void {
+    this.url = this.router.url;
+    this.courseName = this.activatedRoute.snapshot.params["name"];
+    this.courseForm.patchValue({ courseName: this.courseName });
+    this.courseForm.controls["courseName"].disable();
+    this.checkPrivilages();
   }
 
-  addTopic(){
-
+  private checkPrivilages(): void {
+    const details: userDetails = this.auth.getUserDetails();
+    if (details) {
+      this.teacherID = details._id;
+      this.loadPage();
+    }
   }
 
-  updateTopic(){
+  private loadPage(): void {
+    if (this.url.includes("update")) {
+      this.title = "Topic Update Form";
+      this.isTopicAddForm = false;
+      this.loadForm();
+    }
+  }
 
+  public addTopic(): void {
+    if (this.courseForm.valid) {
+      let value = this.courseForm.value;
+      value.teacherID = this.teacherID;
+      value.courseName = this.courseName;
+      this.topic.updateCourse(value).subscribe((response: string) => {
+        this.toastr.success(response, "Success");
+        this.router.navigate(["topic/" + this.courseName]);
+      })
+    } else {
+      this.toastr.error(UserErrors.InvalidForm, "Error");
+    }
+  }
+
+  private loadForm(): void {
+    let topicName = "";
+    this.topic.shareTopic$.subscribe((name: string) => {
+      topicName = name;
+    })
+    if (topicName === "no") {
+      this.router.navigate(["home"]);
+    }
+    this.topic.getTopics(this.courseName).subscribe((response: Topic) => {
+      const topicData: TopicDetail = response[topicName]
+      this.courseForm.get("topicName")?.setValue(topicName);
+      this.courseForm.patchValue(topicData);
+      this.courseForm.get("topicName")?.disable();
+    })
+  }
+
+  public updateTopic(): void {
+    if (this.courseForm.valid) {
+      let value = this.courseForm.value;
+      value.teacherID = this.teacherID;
+      value.courseName = this.courseName;
+      value.topicName = this.courseForm.get("topicName")?.value;
+      this.topic.updateCourse(value).subscribe((response: string) => {
+        this.toastr.success(response, "Success");
+        this.router.navigate(["topic/" + this.courseName]);
+      })
+    } else {
+      this.toastr.error(UserErrors.InvalidForm, "Error");
+    }
+  }
+
+  public cancel(): void {
+    this.router.navigate(["topic/" + this.courseName]);
+  }
+
+  public getField(name: string): FormControl {
+    return this.courseForm.get(name) as FormControl;
   }
 
 }

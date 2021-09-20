@@ -1,0 +1,47 @@
+<span *ngIf="isNoCourse" class="no-item">Invalid Course Name !!!</span>
+<div *ngIf="!isNoCourse" fxFlex="100%" fxFlexFill class="page-container">
+    <mat-card>
+        <mat-card-header fxLayoutAlign="center">
+            <mat-card-title>{{courseName | uppercase}}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <b>Description</b>
+            <br><br>
+            <div class="text-div"> {{overView.description}} </div>
+            <br>
+            <span *ngIf="roles.updateDocument">
+                <strong>
+                    Do you want to add new topic, then click add topic button
+                </strong>
+                <button mat-raised-button color="primary" (click)="triggerAddTopic()">Add Topic</button>
+            </span>
+            <br><br>
+            <div style="overflow-x: auto;">
+                <table>
+                    <tr>
+                        <th>Topic Name</th>
+                        <th>Document Link</th>
+                        <th>Toturial Link</th>
+                        <th *ngIf="roles.updateDocument">Update Topic</th>
+                        <th *ngIf="roles.deleteCourse">Delete Topic</th>
+                    </tr>
+                    <tr *ngFor="let topic of topicsDisplayed; let i = index">
+                        <td>{{keysDisplayed[i]}}</td>
+                        <td><a [href]="topic.documentLink" target="_blank">Click Here</a></td>
+                        <td><a [href]="topic.tutorialLink" target="_blank">Click Here</a></td>
+                        <td *ngIf="roles.updateDocument"><button mat-raised-button
+                                (click)="updateTopic(i)">Update</button>
+                        </td>
+                        <td *ngIf="roles.deleteCourse"><button mat-raised-button
+                                (click)="deleteTopic(i)">Delete</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <br><br>
+            <hr>
+        </mat-card-content>
+        <mat-card-actions>
+        </mat-card-actions>
+    </mat-card>
+</div>

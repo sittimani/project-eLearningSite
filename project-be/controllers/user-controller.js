@@ -1,26 +1,28 @@
-const studentInformationModel = require('../models/studentInformation')
-const professorInformationModel = require('../models/professorInformation')
-const getter = require('../service/getters')
+const userService = require('../service/user.service')
 
 module.exports = {
-    createStudentUser: (body) => {
-        return new Promise((resolve, reject) => {
-            const user = new studentInformationModel(body)
-            user.save().then(data => {
-                resolve({ success: true, message: "Successfully user Created" })
-            }).catch(error => {
-                reject({ success: false, message: "Internal server problem" })
-            })
-        })
+    createUser: async (body) => {
+        const res = await userService.createUser(body)
+        return res;
     },
-    createProfessorUser: (body) => {
-        return new Promise((resolve, reject) => {
-            const user = new professorInformationModel(body)
-            user.save().then(data => {
-                resolve({ success: true, message: "Successfully user Created" })
-            }).catch(error => {
-                reject({ success: false, message: "Internal server problem" })
-            })
-        })
+    getUserData: async (request, response) => {
+        const id = request.params.id;
+        const res = await userService.getUserData(id)
+        response.status(res.statusCode).json(res.message)
+    },
+    updateUser: async (request, response) => {
+        const id = request.params.id;
+        var body = request.body;
+        body.userID = id;
+        const res = await userService.updateUser(id, body)
+        response.status(res.statusCode).json(res.message)
+    },
+    getPendingProfessor: async (request, response) => {
+        const res = await userService.getPendingProfessor();
+        response.status(res.statusCode).json(res.message)
+    },
+    userPermission: async (request, response) => {
+        const res = await userService.userPermission(request.body)
+        response.status(res.statusCode).json(res.message)
     }
 }

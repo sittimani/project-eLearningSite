@@ -1,33 +1,33 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { CourseListComponent } from './topic-management/components/course-list/course-list.component';
-import { CourseComponent } from './topic-management/components/course/course.component';
-import { LoginComponent } from './user-management/components/login/login.component';
-import { RegistrationComponent } from './user-management/components/registration/registration.component';
+import { NgModule } from "@angular/core";
+import { RouterModule, Routes } from "@angular/router";
+import { AuthGuard, InternalServerErrorComponent } from "./core";
+import { PageNotFoundComponent } from "./core/shared/components/page-not-found/page-not-found.component";
+import { CourseListComponent } from "./course-management/components/course-list/course-list.component";
 
 const routes: Routes = [
   {
-    path: '',
-    redirectTo: 'login',
-    pathMatch: 'full'
+    path: "",
+    loadChildren: () => import("./user-management/user-management.module").then(m => m.UserManagementModule)
   }, {
-    path: 'home',
+    path: "home",
+    canActivate: [AuthGuard],
     component: CourseListComponent
   }, {
-    path: 'register',
-    component: RegistrationComponent
+    path: "topic",
+    loadChildren: () => import("./topic-management/topic-management.module").then(m => m.TopicManagementModule)
   }, {
-    path: 'login',
-    component: LoginComponent
-  },{
-    path: 'course',
-    component: CourseComponent
-  },{
-    path: 'updateprofile',
-    component: RegistrationComponent
+    path: "admin",
+    loadChildren: () => import("./course-management/course-management.module").then(m => m.CourseManagementModule)
   }, {
-    path: 'topic',
-    loadChildren: () => import('./topic-management/topic-management.module').then(m => m.TopicManagementModule)
+    path: "q&a",
+    canActivate: [AuthGuard],
+    loadChildren: () => import("./question-and-answer/question-and-answer.module").then(m => m.QuestionAndAnswerModule)
+  }, {
+    path: "internalserverproblem",
+    component: InternalServerErrorComponent
+  }, {
+    path: "**",
+    component: PageNotFoundComponent
   }
 ];
 

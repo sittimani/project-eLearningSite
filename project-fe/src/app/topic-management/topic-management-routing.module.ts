@@ -1,31 +1,30 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from '../user-management/components/login/login.component';
-import { RegistrationComponent } from '../user-management/components/registration/registration.component';
-import { CourseFormComponent } from './components/course-form/course-form.component';
-import { CourseListComponent } from './components/course-list/course-list.component';
-import { CourseComponent } from './components/course/course.component';
-import { TopicFormComponent } from './components/topic-form/topic-form.component';
+import { NgModule } from "@angular/core";
+import { RouterModule, Routes } from "@angular/router";
+import { AuthGuard } from "../core/guard/auth.guard";
+import { EditGuard } from "../core/guard/edit.guard";
+import { LoginComponent } from "../user-management/components/login/login.component";
+import { RegisterComponent } from "../user-management/components/register/register.component";
+import { TopicFormComponent } from "./components/topic-form/topic-form.component";
+import { TopicComponent } from "./components/topic/topic.component";
 
 const routes: Routes = [
   {
-    path: '',
-    redirectTo: 'register',
-    pathMatch: 'full'
-  }, {
-    path: 'register',
-    component: RegistrationComponent
-  }, {
-    path:'home',
-    component: CourseListComponent
-  }, {
-    path: 'login',
+    path: "",
     component: LoginComponent
   }, {
-    path: 'addtopic',
+    path: "register",
+    component: RegisterComponent
+  }, {
+    path: ":name",
+    canActivate: [AuthGuard],
+    component: TopicComponent
+  }, {
+    path: "add/:name",
+    canActivate: [AuthGuard, EditGuard],
     component: TopicFormComponent
   }, {
-    path: 'update',
+    path: "update/:name",
+    canActivate: [AuthGuard, EditGuard],
     component: TopicFormComponent
   }
 ];

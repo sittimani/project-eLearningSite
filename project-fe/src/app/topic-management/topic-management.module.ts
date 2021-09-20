@@ -1,28 +1,24 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MaterialModule } from '../material/material.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CourseFormComponent } from './components/course-form/course-form.component';
-import { TopicManagementRoutingModule } from './topic-management-routing.module';
-import { CourseListComponent } from './components/course-list/course-list.component';
-import { CourseComponent } from './components/course/course.component';
-import { TopicFormComponent } from './components/topic-form/topic-form.component';
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { TopicFormComponent } from "./components/topic-form/topic-form.component";
+import { TopicComponent } from "./components/topic/topic.component";
+import { MaterialModule } from "../material/material.module";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { TopicManagementRoutingModule } from "./topic-management-routing.module";
 
 
 
 @NgModule({
   declarations: [
-    CourseFormComponent,
-    CourseListComponent,
-    CourseComponent,
-    TopicFormComponent
+    TopicFormComponent,
+    TopicComponent
   ],
   imports: [
     CommonModule,
     MaterialModule,
+    TopicManagementRoutingModule,
     FormsModule,
-    ReactiveFormsModule,
-    TopicManagementRoutingModule
+    ReactiveFormsModule
   ]
 })
 export class TopicManagementModule { }

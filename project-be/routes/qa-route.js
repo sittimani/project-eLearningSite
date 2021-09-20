@@ -1,12 +1,20 @@
-const router = require('express').Router()
-const qaController = require('../controllers/qa-controller')
-const getter = require('../middleware/verifyToken')
+import { Router } from "express"
+import { verifyToken, isProfessor, isAdmin } from "../middleware/verifyToken.js"
+import {
+    uploadQuestion,
+    getMyQuestions,
+    getAllQuestions,
+    getDataForEdit,
+    submitAnswer
+} from "../controllers/qa-controller.js"
 
-router.post('/upload-question', getter.verifyToken, qaController.uploadQuestion)
-router.get('/my-questions/:id', getter.verifyToken, qaController.getMyQuestions)
-router.get('/all-questions', getter.verifyToken, qaController.getAllQuestions)
-router.get('/answered-question/:id', getter.verifyToken, qaController.getDataForEdit)
+const router = Router()
 
-router.put('/answer', getter.verifyToken, qaController.submitQuestion)
+router.post('/upload-question', verifyToken, uploadQuestion)
+router.get('/my-questions/:id', verifyToken, getMyQuestions)
+router.get('/all-questions', [verifyToken, isProfessor], getAllQuestions)
+router.get('/answered-question/:id', [verifyToken, isProfessor], getDataForEdit)
 
-module.exports = router
+router.put('/answer', verifyToken, submitAnswer)
+
+export default router

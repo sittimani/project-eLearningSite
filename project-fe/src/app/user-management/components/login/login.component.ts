@@ -2,8 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators, FormControl } from "@angular/forms";
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
-import { LoginCreditionals, LoginResponse, UserErrors } from "src/app/core";
-import { AuthService } from "../..";
+import { UserErrors } from "src/app/core";
+import { AuthService, LoginCreditionals, LoginResponse } from "../..";
 
 @Component({
   selector: "app-login",
@@ -28,13 +28,13 @@ export class LoginComponent implements OnInit {
       email: ["", [Validators.required, Validators.email]],
       password: ["", [Validators.required, Validators.minLength(8)]]
     })
+  }
+
+  ngOnInit(): void {
     if (this.auth.getToken()) {
       this.auth.loggedIn();
       this.router.navigate(["home"]);
     }
-  }
-
-  ngOnInit(): void {
     if (this.router.url.includes("forgotpassword")) {
       this.isForgotPassword = true;
       this.title = "Reset Password";
@@ -46,6 +46,7 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       let value: LoginCreditionals = this.loginForm.value;
       this.auth.loginAsUser(value).subscribe((response: LoginResponse) => {
+        console.log(response)
         this.setToken(response);
       })
     } else {
@@ -53,8 +54,7 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  private setToken(x: LoginResponse): void {
-    const responseData = x;
+  private setToken(responseData: LoginResponse): void {
     this.auth.setToken(responseData);
     this.router.navigate(["home"]);
     this.toastr.success("Logged in successfully", "Success");
@@ -62,8 +62,8 @@ export class LoginComponent implements OnInit {
 
   public resetPassword(): void {
     if (this.loginForm.valid) {
-      const email =  this.loginForm.get("email")?.value;
-      this.auth.forgotPassword({ email: email}).subscribe((response: string) => {
+      const email = this.loginForm.get("email")?.value;
+      this.auth.forgotPassword({ email: email }).subscribe((response: string) => {
         this.toastr.success(response, "Success");
         this.router.navigate(["login"]);
       })

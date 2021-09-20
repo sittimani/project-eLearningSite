@@ -1,37 +1,44 @@
-const courseService = require('../service/course.service')
+import {
+    allCourse,
+    allTopics,
+    updateTopic,
+    particularTopic,
+    createCourse,
+    deleteCourse,
+    deleteTopic
+} from "../service/course.service.js"
+import { sendResponse } from "../service/response.js"
 
-module.exports = {
-    getAvailableCourse: async (request, response) => {
-        const res = await courseService.getAllCourse()
-        response.status(res.statusCode).json(res.message)
-    },
-    getAllTopics: async (request, response) => {
-        const name = request.params.name.trim();
-        const res = await courseService.getAllTopics(name)
-        response.status(res.statusCode).json(res.message)
-    },
-    updateParticularTopic: async (request, response) => {
-        const res = await courseService.updateTopic(request.body)
-        response.status(res.statusCode).json(res.message)
-    },
-    getParticularTopic: async (request, response) => {
-        const courseName = request.body.courseName;
-        const res = await courseService.getParticularTopic(courseName)
-        response.status(res.statusCode).json(res.message)
-    },
-    picUpload: (request, response) => {
-        response.json(request.file.filename);
-    },
-    uploadCourse: async (request, response) => {
-        const res = await courseService.uploadCourse(request.body, request.body.overview)
-        response.status(res.statusCode).json(res.message)
-    },
-    deleteParticularTopic: async (request, response) => {
-        const res = await courseService.deleteTopic(request.body)
-        response.status(res.statusCode).json(res.message)
-    },
-    deleteEntireCourse: async (request, response) => {
-        const res = await courseService.deleteCourse(request.body)
-        response.status(res.statusCode).json(res.message)
-    }
+export async function getAvailableCourse(request, response) {
+    const res = await allCourse()
+    sendResponse(response, res)
+}
+export async function getAllTopics(request, response) {
+    const name = request.params.name.trim();
+    const res = await allTopics(name)
+    sendResponse(response, res)
+}
+export async function updateParticularTopic(request, response) {
+    const res = await updateTopic(request.body)
+    sendResponse(response, res)
+}
+export async function getParticularTopic(request, response) {
+    const courseName = request.body.courseName;
+    const res = await particularTopic(courseName)
+    sendResponse(response, res)
+}
+export async function picUpload(request, response) {
+    response.json(request.file.filename);
+}
+export async function uploadCourse(request, response) {
+    const res = await createCourse(request.body, request.body.overview)
+    sendResponse(response, res)
+}
+export async function deleteParticularTopic(request, response) {
+    const res = await deleteTopic(request.body)
+    sendResponse(response, res)
+}
+export async function deleteEntireCourse(request, response) {
+    const res = await deleteCourse(request.body)
+    sendResponse(response, res)
 }

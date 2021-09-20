@@ -1,11 +1,11 @@
-const mongoose = require('mongoose')
+import mongoose from "mongoose"
 
 const Schema = mongoose.Schema
 
 const roleSchema = new Schema({
-    _id:{
+    _id: {
         type: String
-    }, 
+    },
     readDocument: {
         type: Boolean
     },
@@ -24,4 +24,6 @@ const roleSchema = new Schema({
 }, { timestamps: true, versionKey: false })
 
 
-module.exports = mongoose.model('rolePrivilage', roleSchema, "rolePrivilages")
+const model = mongoose.model('rolePrivilage', roleSchema, "rolePrivilages")
+
+export default model 

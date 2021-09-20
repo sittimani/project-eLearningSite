@@ -1,16 +1,12 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
-import {
-  CourseList,
-  DialogService,
-  Roles,
-  Topic,
-  userDetails
-} from "src/app/core";
-import { AuthService } from "src/app/user-management";
+import { Topic } from "src/app/topic-management";
+import { AuthService, Roles } from "src/app/user-management";
 import { environment } from "src/environments/environment";
-import { CourseService } from "../..";
+import { CourseList, CourseService } from "../..";
+import { UserDetails } from "src/app/user-management";
+import { DialogService } from "src/app/shared";
 
 @Component({
   selector: "app-course-list",
@@ -36,10 +32,9 @@ export class CourseListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    const userDetails: userDetails = this.auth.getUserDetails();
-    if (userDetails) {
-      this.roles = userDetails.role;
-    }
+    const UserDetails: UserDetails = this.auth.getUserDetails();
+    if (UserDetails)
+      this.roles = UserDetails.role;
     this.getCourses();
   }
 
@@ -67,8 +62,8 @@ export class CourseListComponent implements OnInit {
 
   public deleteCourse(name: string): void {
     this.dialog.setDetails("Ok", "Cancel", "Are you sure, you want to delete " + name + " course?");
-    this.dialog.openDialog().afterClosed().subscribe(x => {
-      if (x) {
+    this.dialog.openDialog().afterClosed().subscribe((choice: boolean) => {
+      if (choice) {
         this.courseService.deleteCourse(name).subscribe((responseData: string) => {
           this.toastr.success(responseData, "Success");
           this.getCourses();

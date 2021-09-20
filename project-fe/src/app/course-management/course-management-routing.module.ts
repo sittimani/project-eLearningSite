@@ -1,22 +1,21 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-import { DashboardComponent } from "./components/dashboard/dashboard.component";
-import { CourseFormComponent } from "./components/course-form/course-form.component";
-import { CreateGuard } from "../core/guard/create.guard";
+import { CourseFormComponent, DashboardComponent } from ".";
 import { AuthGuard } from "../core";
 
 const routes: Routes = [
   {
     path: "",
+    canActivate: [AuthGuard],
     redirectTo: "/admin/dashboard",
     pathMatch: "full"
   }, {
     path: "dashboard",
-    canActivate: [AuthGuard, CreateGuard],
+    canActivate: [AuthGuard],
     component: DashboardComponent
   }, {
     path: "add",
-    canActivate: [AuthGuard, CreateGuard],
+    canActivate: [AuthGuard],
     component: CourseFormComponent
   }
 ];

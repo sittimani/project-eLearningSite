@@ -1,9 +1,10 @@
 import { AfterViewChecked, ChangeDetectorRef, Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
-import { LoaderService, Roles, userDetails, UserErrors } from "./core";
+import { UserErrors } from "./core";
 import { QaService } from "./question-and-answer";
-import { AuthService } from "./user-management";
+import { LoaderService } from "./shared/service/loader.service";
+import { AuthService, Menu, Roles, UserDetails } from "./user-management";
 
 @Component({
   selector: "app-root",
@@ -24,7 +25,7 @@ export class AppComponent implements OnInit, AfterViewChecked {
     updateDocument: false
   };
   public isLoading = false;
-
+  public menu:Menu[] = []
 
   constructor(
     private auth: AuthService,
@@ -42,14 +43,22 @@ export class AppComponent implements OnInit, AfterViewChecked {
   ngOnInit(): void {
     this.auth.behSubject$.subscribe(x => {
       this.isLoggedIn = false;
+      this.menu = []
       if (x) {
-        const userDetails: userDetails = this.auth.getUserDetails();
+        const userDetails: UserDetails = this.auth.getUserDetails();
         this.isLoggedIn = true;
         this.userName = userDetails.name;
         this.userId = userDetails._id;
         this.roles = userDetails.role;
+        this.loadMenu();
       }
     })
+  }
+
+  private loadMenu() {
+    const menuItems = localStorage.getItem("menu");
+    if(menuItems)
+      this.menu = JSON.parse(menuItems)
   }
 
   ngAfterViewChecked() {

@@ -1,10 +1,10 @@
-const mongoose = require('mongoose')
+import  mongoose from "mongoose"
 
 const Schema = mongoose.Schema
 const questionSchema = new Schema({
-    studentID:{
+    studentID: {
         type: String
-    }, 
+    },
     question: {
         type: String
     },
@@ -19,10 +19,12 @@ const questionSchema = new Schema({
     },
     answer: {
         type: String,
-    }, 
+    },
     isAnswered: {
         type: Boolean
     }
 }, { timestamps: true, versionKey: false })
 
-module.exports = mongoose.model('qa', questionSchema, "questions")
+const model = mongoose.model('qa', questionSchema, "questions")
+
+export default model 

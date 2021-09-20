@@ -1,10 +1,20 @@
-const router = require('express').Router()
-const userController = require('../controllers/user-controller')
-const getter = require('../middleware/verifyToken')
 
-router.get('/my-details/:id', getter.verifyToken, userController.getUserData)
-router.put('/update-profile/:id', getter.verifyToken, userController.updateUser)
-router.get('/pending-professor', getter.verifyToken, userController.getPendingProfessor)
-router.post('/update-permission', getter.verifyToken, userController.userPermission)
+import { Router } from "express"
+import {
+    verifyToken,
+    isAdmin
+}from "../middleware/verifyToken.js"
+import {
+    getUserData,
+    updateUser,
+    getPendingProfessor,
+    userPermission
+} from "../controllers/user-controller.js"
 
-module.exports = router
+const router = Router()
+router.get('/my-details/:id', verifyToken, getUserData)
+router.put('/update-profile/:id', verifyToken, updateUser)
+router.get('/pending-professor', verifyToken, getPendingProfessor)
+router.post('/update-permission', [verifyToken, isAdmin], userPermission)
+
+export default router

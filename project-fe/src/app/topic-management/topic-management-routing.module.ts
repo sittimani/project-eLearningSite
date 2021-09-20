@@ -1,11 +1,9 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-import { AuthGuard } from "../core/guard/auth.guard";
-import { EditGuard } from "../core/guard/edit.guard";
+import { TopicComponent, TopicFormComponent } from ".";
+import { AuthGuard } from "../core";
 import { LoginComponent } from "../user-management/components/login/login.component";
 import { RegisterComponent } from "../user-management/components/register/register.component";
-import { TopicFormComponent } from "./components/topic-form/topic-form.component";
-import { TopicComponent } from "./components/topic/topic.component";
 
 const routes: Routes = [
   {
@@ -20,11 +18,11 @@ const routes: Routes = [
     component: TopicComponent
   }, {
     path: "add/:name",
-    canActivate: [AuthGuard, EditGuard],
+    canActivate: [AuthGuard],
     component: TopicFormComponent
   }, {
     path: "update/:name",
-    canActivate: [AuthGuard, EditGuard],
+    canActivate: [AuthGuard],
     component: TopicFormComponent
   }
 ];

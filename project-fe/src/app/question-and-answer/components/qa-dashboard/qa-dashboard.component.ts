@@ -1,16 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
-import {
-  Answer,
-  QAModel,
-  Roles,
-  userDetails,
-  UserErrors
-} from "src/app/core";
-import { AuthService } from "src/app/user-management";
-import { QaService } from "../..";
-
+import { UserErrors } from "src/app/core";
+import { AuthService, Roles } from "src/app/user-management";
+import { Answer, QAModel, QaService } from "../..";
+import { UserDetails } from "src/app/user-management";
 
 @Component({
   selector: "app-qa-dashboard",
@@ -33,14 +27,14 @@ export class QaDashboardComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    const userDetails: userDetails = this.auth.getUserDetails();
+    const userDetails: UserDetails = this.auth.getUserDetails();
     if (userDetails) {
       this.userID = userDetails._id;
       this.userName = userDetails.name;
       this.loadPage(userDetails)
     }
   }
-  private loadPage(userDetails: userDetails): void {
+  private loadPage(userDetails: UserDetails): void {
     if (this.router.url.includes("my-answers")) {
       this.isAnswerEditPage = true;
       this.getDataForEdit();
@@ -91,8 +85,8 @@ export class QaDashboardComponent implements OnInit {
 
   public answer(id: string): void {
     this.qaService.isQuestionForm = false;
-    this.qaService.openInputDialog().afterClosed().subscribe(x => {
-      if (x) {
+    this.qaService.openInputDialog().afterClosed().subscribe((isClosed: boolean) => {
+      if (isClosed) {
         const ans = this.qaService.answer;
         const val: Answer = {
           questionID: id,

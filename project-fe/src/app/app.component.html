@@ -1,55 +1,60 @@
 <mat-sidenav-container>
 
-    <!-- sidenav bar displayed only screensize reduced -->
-    <mat-sidenav class="sideBarNav" [(opened)]="isOpen">
-        <ng-template [ngTemplateOutlet]="navigationItems"></ng-template>
-    </mat-sidenav>
+  <!-- sidenav bar displayed only screensize reduced -->
+  <mat-sidenav class="sideBarNav" [(opened)]="isOpen">
+    <ng-template [ngTemplateOutlet]="navigationItems"></ng-template>
+  </mat-sidenav>
 
-    <!-- sidenav content which displayed in browser -->
-    <mat-sidenav-content>
-        <!-- Spinner -->
-        <div class="loader-container" *ngIf="isLoading">
-            <mat-spinner></mat-spinner>
-        </div>
+  <!-- sidenav content which displayed in browser -->
+  <mat-sidenav-content>
+    <!-- Spinner -->
+    <div class="loader-container" *ngIf="isLoading">
+      <mat-spinner></mat-spinner>
+    </div>
 
-        <!-- navigation bar -->
-        <mat-toolbar color="primary" class="navbar">
-            <div>
-                <button id="menuButton" (click)="isOpen = !isOpen">
+    <!-- navigation bar -->
+    <mat-toolbar color="primary" class="navbar">
+      <div>
+        <button id="menuButton" (click)="isOpen = !isOpen">
           <mat-icon>menu</mat-icon>
         </button>
-                <span>{{title}}</span>
-            </div>
-            <!-- Navigation Items -->
-            <div class="navigation" *ngIf="!isOpen">
-                <ng-template [ngTemplateOutlet]="navigationItems"></ng-template>
-            </div>
-        </mat-toolbar>
+        <span>{{title}}</span>
+      </div>
+      <!-- Navigation Items -->
+      <div class="navigation" *ngIf="!isOpen">
+        <ng-template [ngTemplateOutlet]="navigationItems"></ng-template>
+      </div>
+    </mat-toolbar>
 
 
-        <router-outlet></router-outlet>
+    <router-outlet></router-outlet>
 
-        <!-- Footer -->
-        <mat-toolbar color="primary" class="footer">
-            <span>
+    <!-- Footer -->
+    <mat-toolbar color="primary" class="footer">
+      <span>
         &copy;Manikandan
       </span>
-        </mat-toolbar>
-    </mat-sidenav-content>
+    </mat-toolbar>
+  </mat-sidenav-content>
 </mat-sidenav-container>
 
 <ng-template #navigationItems>
-    <!-- navigation items after login -->
-    <a routerLink="/admin/add" *ngIf="roles.createCourse">Add Course</a>
-    <a routerLink="/admin/dashboard" *ngIf="roles.createCourse">Dashboard</a>
-    <a (click)="takeQuestion()" *ngIf="isLoggedIn && isStudent">Ask
+  <!-- navigation items after login -->
+  <!-- <a routerLink="/admin/add" *ngIf="roles.createCourse">Add Course</a>
+  <a routerLink="/admin/dashboard" *ngIf="roles.createCourse">Dashboard</a> -->
+  <a (click)="takeQuestion()" *ngIf="isLoggedIn && isStudent">Ask
     Question</a>
-    <a routerLink="/q&a" *ngIf="isLoggedIn">QA Dashboard</a>
-    <a routerLink="/home" *ngIf="isLoggedIn">Home</a>
-    <!-- navigation items before login -->
-    <a routerLink="/register" *ngIf="!isLoggedIn">Register</a>
-    <a routerLink="/login" *ngIf="!isLoggedIn">Login</a>
-    <span *ngIf="isLoggedIn">
+  <span *ngFor="let item of menu">
+    <a [routerLink]="item.link">{{item.path}}</a>
+  </span>
+  <!-- <a routerLink="/q&a" *ngIf="isLoggedIn">QA Dashboard</a>
+  <a routerLink="/home" *ngIf="isLoggedIn">Home</a> -->
+  <!-- navigation items before login -->
+  <span *ngIf="!isLoggedIn">
+    <a routerLink="/register">Register</a>
+    <a routerLink="/login">Login</a>
+  </span>
+  <span *ngIf="isLoggedIn">
     <!-- user navigation items -->
     <a class="userName" [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger"
       (mouseenter)="menuTrigger.openMenu()">{{userName}}</a>

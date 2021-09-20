@@ -1,2 +1,6 @@
 export * from "./shared/service/auth.service"
 export * from "./shared/service/user-profile.service"
+export * from "./shared/interface/user.interface"
+export * from "./components/login/login.component"
+export * from "./components/password/password.component"
+export * from "./components/register/register.component"

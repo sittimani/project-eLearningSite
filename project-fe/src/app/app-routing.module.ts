@@ -1,8 +1,8 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-import { AuthGuard, InternalServerErrorComponent } from "./core";
-import { PageNotFoundComponent } from "./core/shared/components/page-not-found/page-not-found.component";
-import { CourseListComponent } from "./course-management/components/course-list/course-list.component";
+import { AuthGuard } from "./core";
+import { CourseListComponent } from "./course-management";
+import { InternalServerErrorComponent, PageNotFoundComponent } from "./shared";
 
 const routes: Routes = [
   {
@@ -20,7 +20,6 @@ const routes: Routes = [
     loadChildren: () => import("./course-management/course-management.module").then(m => m.CourseManagementModule)
   }, {
     path: "q&a",
-    canActivate: [AuthGuard],
     loadChildren: () => import("./question-and-answer/question-and-answer.module").then(m => m.QuestionAndAnswerModule)
   }, {
     path: "internalserverproblem",

@@ -1,17 +1,33 @@
-const router = require('express').Router()
-const courseController = require('../controllers/course-controller')
-const uploads = require('../middleware/uploads').upload
-const getter = require('../middleware/verifyToken')
+import { Router } from "express"
+import {
+    getAvailableCourse,
+    getAllTopics,
+    getParticularTopic,
+    uploadCourse,
+    updateParticularTopic,
+    picUpload,
+    deleteEntireCourse,
+    deleteParticularTopic
+} from "../controllers/course-controller.js"
+import * as upload from "../middleware/uploads.js"
+import{
+    verifyToken,
+    isProfessor,
+    isAdmin
+} from "../middleware/verifyToken.js"
 
-router.get('/course', getter.verifyToken, courseController.getAvailableCourse)
-router.get('/course-topic/:name', getter.verifyToken, courseController.getAllTopics)
+const uploads = upload.upload
 
-router.post('/topics', getter.verifyToken, courseController.getParticularTopic)
-router.put('/update-topic', getter.verifyToken, courseController.updateParticularTopic)
-router.post('/picture', [uploads.single('avator'), getter.verifyToken], courseController.picUpload)
-router.post('/upload-course', getter.verifyToken, courseController.uploadCourse)
+const router = Router()
+router.get('/course', verifyToken, getAvailableCourse)
+router.get('/course-topic/:name', verifyToken, getAllTopics)
 
-router.delete('/delete-topic', getter.verifyToken, courseController.deleteParticularTopic)
-router.delete('/delete-course', getter.verifyToken, courseController.deleteEntireCourse)
+router.post('/topics', verifyToken, getParticularTopic)
+router.put('/update-topic', [verifyToken, isProfessor], updateParticularTopic)
+router.post('/picture', [uploads.single('avator'), verifyToken], picUpload)
+router.post('/upload-course', [verifyToken, isProfessor], uploadCourse)
 
-module.exports = router;
+router.delete('/delete-topic', [verifyToken, isAdmin], deleteParticularTopic)
+router.delete('/delete-course', [verifyToken, isAdmin], deleteEntireCourse)
+
+export default router

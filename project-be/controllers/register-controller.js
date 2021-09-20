@@ -1,8 +1,7 @@
-const registerService = require('../service/register.service')
+import { registerUser } from "../service/register.service.js"
+import { sendResponse } from "../service/response.js"
 
-module.exports = {
-    register: async(request, response) => {
-        const res = await registerService.register(request.body)
-        response.status(res.statusCode).json(res.message)
-    }
+export async function register(request, response) {
+    const res = await registerUser(request.body)
+    sendResponse(response, res)
 }

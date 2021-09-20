@@ -2,8 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
-import { UserErrors, passwordMatchValidator, ResetPassword } from "src/app/core";
-import { AuthService } from "../..";
+import { UserErrors, passwordMatchValidator } from "src/app/core";
+import { AuthService, ResetPassword } from "../..";
 
 
 @Component({
@@ -32,14 +32,13 @@ export class PasswordComponent implements OnInit {
     }, { validator: passwordMatchValidator("password", "confirmPassword") });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     const userDetails = this.auth.getUserDetails();
-    if (userDetails) {
+    if (userDetails)
       this.id = userDetails._id;
-    }
   }
 
-  changePassword() {
+  public changePassword(): void {
     if (this.passwordForm.valid) {
       let value: ResetPassword = {
         id: this.id,

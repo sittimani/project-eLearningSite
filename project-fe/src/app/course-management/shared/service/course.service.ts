@@ -1,8 +1,9 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { CourseForm, Topic } from "src/app/core";
+import { Topic } from "src/app/topic-management";
 import { environment } from "src/environments/environment";
+import { CourseForm } from "../..";
 
 @Injectable({
   providedIn: "root"
@@ -13,19 +14,19 @@ export class CourseService {
 
   constructor(private http: HttpClient) { }
 
-  getAllCourse(): Observable<Topic[]> {
+  public getAllCourse(): Observable<Topic[]> {
     return this.http.get<Topic[]>(this.serverAddress + "course")
   }
 
-  getPicName(picture: FormData): Observable<string> {
+  public getPicName(picture: FormData): Observable<string> {
     return this.http.post<string>(this.serverAddress + "picture", picture)
   }
 
-  uploadCourse(value: CourseForm): Observable<string> {
+  public uploadCourse(value: CourseForm): Observable<string> {
     return this.http.post<string>(this.serverAddress + "upload-course", value)
   }
 
-  deleteCourse(name: string): Observable<string> {
+  public deleteCourse(name: string): Observable<string> {
     return this.http.delete<string>(this.serverAddress + "delete-course", { body: { courseName: name } })
   }
 }

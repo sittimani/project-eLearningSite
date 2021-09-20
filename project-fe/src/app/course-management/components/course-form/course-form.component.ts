@@ -61,8 +61,7 @@ export class CourseFormComponent {
         })
       })
     } else {
-      let error;
-      !this.isFileUploaded ? error = UserErrors.InvalidFile : error = UserErrors.InvalidForm;
+      const error = !this.isFileUploaded ? UserErrors.InvalidFile : UserErrors.InvalidForm;
       this.toastr.error(error, "Error")
     }
   }

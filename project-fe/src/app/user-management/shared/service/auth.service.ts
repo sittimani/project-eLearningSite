@@ -1,14 +1,14 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable } from "rxjs";
+import { environment } from "src/environments/environment";
 import {
   LoginCreditionals,
   LoginResponse,
+  UserInformation,
   ResetPassword,
-  userDetails,
-  UserInformation
-} from "src/app/core";
-import { environment } from "src/environments/environment";
+  UserDetails
+} from "../..";
 
 @Injectable({
   providedIn: "root"
@@ -56,10 +56,11 @@ export class AuthService {
   public setToken(responseData: LoginResponse) {
     localStorage.setItem("token", responseData.accessToken);
     localStorage.setItem("user", JSON.stringify(responseData.user.users))
+    localStorage.setItem("menu", JSON.stringify(responseData.menu))
     this.loggedIn()
   }
 
-  public getUserDetails(): userDetails {
+  public getUserDetails(): UserDetails {
     const details: any = localStorage.getItem("user")
     const originalData = JSON.parse(details)
     return originalData

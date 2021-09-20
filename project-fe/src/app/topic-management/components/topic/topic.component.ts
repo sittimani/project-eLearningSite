@@ -1,15 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
-import {
-  CourseOverView,
-  DialogService,
-  Roles,
-  Topic,
-  TopicDetail
-} from "src/app/core";
-import { AuthService } from "src/app/user-management";
-import { TopicService } from "../..";
+import { CourseOverView } from "src/app/course-management";
+import { DialogService } from "src/app/shared";
+import { Roles, AuthService } from "src/app/user-management";
+import { Topic, TopicDetail, TopicService } from "../..";
 
 
 @Component({
@@ -37,11 +32,10 @@ export class TopicComponent implements OnInit {
     private currentRoute: ActivatedRoute,
     private dialog: DialogService,
     private toastr: ToastrService
-  ) {
-    this.courseName = this.currentRoute.snapshot.params["name"];
-  }
+  ) { }
 
   ngOnInit(): void {
+    this.courseName = this.currentRoute.snapshot.params["name"];
     this.getCourse();
     const userDetails = this.auth.getUserDetails();
     if (userDetails) {
@@ -78,7 +72,7 @@ export class TopicComponent implements OnInit {
   public deleteTopic(index: number): void {
     const topicName = this.keysDisplayed[index];
     this.dialog.setDetails("Ok", "Cancel", "Are you sure, you want to delete " + topicName + " topic?");
-    this.dialog.openDialog().afterClosed().subscribe(x => {
+    this.dialog.openDialog().afterClosed().subscribe((x) => {
       if (x) {
         this.topic.deleteTopic(this.courseName, topicName).subscribe((response: string) => {
           this.toastr.success(response, "Success");

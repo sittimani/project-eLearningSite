@@ -1,28 +1,35 @@
-const userService = require('../service/user.service')
+import {
+    saveUser,
+    userData,
+    updateUserDetails,
+    pendingProfessor,
+    updatePermission
+} from "../service/user.service.js"
+import { sendResponse } from "../service/response.js"
 
-module.exports = {
-    createUser: async (body) => {
-        const res = await userService.createUser(body)
-        return res;
-    },
-    getUserData: async (request, response) => {
-        const id = request.params.id;
-        const res = await userService.getUserData(id)
-        response.status(res.statusCode).json(res.message)
-    },
-    updateUser: async (request, response) => {
-        const id = request.params.id;
-        var body = request.body;
-        body.userID = id;
-        const res = await userService.updateUser(id, body)
-        response.status(res.statusCode).json(res.message)
-    },
-    getPendingProfessor: async (request, response) => {
-        const res = await userService.getPendingProfessor();
-        response.status(res.statusCode).json(res.message)
-    },
-    userPermission: async (request, response) => {
-        const res = await userService.userPermission(request.body)
-        response.status(res.statusCode).json(res.message)
-    }
+
+export async function createUser(body) {
+    const res = await saveUser(body)
+    return res;
+}
+export async function getUserData(request, response) {
+    const id = request.params.id;
+    const res = await userData(id)
+    sendResponse(response, res)
+}
+export async function updateUser(request, response) {
+    const id = request.params.id;
+    var body = request.body;
+    body.userID = id;
+    const res = await updateUserDetails(id, body)
+    sendResponse(response, res)
+}
+export async function getPendingProfessor(request, response) {
+    const res = await pendingProfessor();
+    sendResponse(response, res)
+}
+
+export async function userPermission(request, response) {
+    const res = await updatePermission(request.body)
+    sendResponse(response, res)
 }

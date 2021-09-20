@@ -1,8 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { UpdatePermission, userAuth, UserInformation } from "src/app/core";
 import { environment } from "src/environments/environment";
+import { UserInformation, userAuth, UpdatePermission } from "../..";
 
 @Injectable({
   providedIn: "root"

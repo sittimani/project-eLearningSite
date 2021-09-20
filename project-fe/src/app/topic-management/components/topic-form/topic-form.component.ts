@@ -2,9 +2,9 @@ import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators, FormControl } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
-import { Topic, TopicDetail, userDetails, UserErrors } from "src/app/core";
-import { AuthService } from "src/app/user-management";
-import { TopicService } from "../..";
+import { UserErrors } from "src/app/core";
+import { AuthService, UserDetails } from "src/app/user-management";
+import { Topic, TopicDetail, TopicService } from "../..";
 
 @Component({
   selector: "app-topic-form",
@@ -45,7 +45,7 @@ export class TopicFormComponent implements OnInit {
   }
 
   private checkPrivilages(): void {
-    const details: userDetails = this.auth.getUserDetails();
+    const details: UserDetails = this.auth.getUserDetails();
     if (details) {
       this.teacherID = details._id;
       this.loadPage();
@@ -79,9 +79,8 @@ export class TopicFormComponent implements OnInit {
     this.topic.shareTopic$.subscribe((name: string) => {
       topicName = name;
     })
-    if (topicName === "no") {
+    if (topicName === "no")
       this.router.navigate(["home"]);
-    }
     this.topic.getTopics(this.courseName).subscribe((response: Topic) => {
       const topicData: TopicDetail = response[topicName]
       this.courseForm.get("topicName")?.setValue(topicName);

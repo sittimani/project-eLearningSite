@@ -1,24 +1,25 @@
-const authModel = require('../models/auth-model')
-const AuthService = require('../service/auth.service')
-const authService = new AuthService()
+import {
+    login,
+    updateUserPassword,
+    userForgotPassword,
+    verify
+} from "../service/auth.service.js"
+import { sendResponse } from "../service/response.js"
 
-module.exports = {
-    userLogin: async (request, response) => {
-        const res = await authService.login(request.body)
-        response.status(res.statusCode).json(res.message)
-    },
-    updatePassword: async (request, response) => {
-        const res = await authService.updatePassword(request.body)
-        response.status(res.statusCode).json(res.message)
-    },
-    verifyUser: async (request, response) => {
-        const id = request.params.id;
-        const res = await authService.verify(id)
-        response.end(res)
-    },
-    forgotPassword: async (request, response) => {
-        const res = await authService.forgotPassword(request.body)
-        response.status(res.statusCode).json(res.message)
-
-    }
+export async function userLogin(request, response) {
+    const res = await login(request.body)
+    sendResponse(response, res)
+}
+export async function updatePassword(request, response) {
+    const res = await updateUserPassword(request.body)
+    sendResponse(response, res)
+}
+export async function verifyUser(request, response) {
+    const id = request.params.id;
+    const res = await verify(id)
+    response.end(res)
+}
+export async function forgotPassword(request, response) {
+    const res = await userForgotPassword(request.body)
+    sendResponse(response, res)
 }

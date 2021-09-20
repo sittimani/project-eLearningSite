@@ -1,11 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable } from "rxjs";
-import {
-  Topic,
-  TopicDetail
-} from "src/app/core";
 import { environment } from "src/environments/environment";
+import { Topic, TopicDetail } from "../..";
 
 @Injectable({
   providedIn: "root"
@@ -20,7 +17,7 @@ export class TopicService {
     this.shareTopic = new BehaviorSubject("no")
     this.shareTopic$ = this.shareTopic.asObservable()
   }
-  // used in topic list (To get all topics for the course)
+  
   public getCourse(name: string): Observable<Topic[]> {
     return this.http.get<Topic[]>(this.serverAddess + "course-topic/ " + name)
   }

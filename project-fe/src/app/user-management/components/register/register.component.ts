@@ -2,14 +2,15 @@ import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators, FormControl } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
-import { UserErrors, passwordMatchValidator, UserInformation } from "src/app/core";
-import { AuthService, UserProfileService } from "../..";
+import { UserErrors, passwordMatchValidator } from "src/app/core";
+import { AuthService, UserInformation, UserProfileService } from "../..";
 
 @Component({
   selector: "app-register",
   templateUrl: "./register.component.html",
   styleUrls: ["./register.component.css"]
 })
+
 export class RegisterComponent implements OnInit {
 
   public title = "Registration Form"
@@ -40,7 +41,7 @@ export class RegisterComponent implements OnInit {
     }, { validator: passwordMatchValidator("password", "confirmPassword") });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.loadForm()
     const url = this.router.url;
     if (url.includes("update-profile")) {

@@ -1,10 +1,10 @@
-const mongoose = require('mongoose')
+import mongoose from "mongoose"
 
 const Schema = mongoose.Schema
 const authSchema = new Schema({
-    email:{
+    email: {
         type: String
-    }, 
+    },
     password: {
         type: String
     },
@@ -13,11 +13,12 @@ const authSchema = new Schema({
     },
     emailVerified: {
         type: Boolean
-    }, 
+    },
     verified: {
         type: String
     }
 }, { timestamps: true, versionKey: false })
 
+const model = mongoose.model('authSchema', authSchema, "logins")
 
-module.exports = mongoose.model('authSchema', authSchema, "logins")
+export default model 

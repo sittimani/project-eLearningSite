@@ -1,69 +1,68 @@
-const qaModel = require('../models/qa-model')
-const statusCode = require('../constants/status-code').statusCode
-const statusText = require('../constants/status-text').message
+import qaModel from "../models/qa-model.js"
+import { statusCode } from "../constants/status-code.js"
+import { statusText } from "../constants/status-text.js"
+import { dbError } from "./response.js"
 
+export async function createQuestion(body) {
+    try {
+        const newQuestion = new qaModel(body)
+        const data = await newQuestion.save()
+        return { statusCode: statusCode.ok, message: "Question uploaded successfully" }
+    } catch (error) {
+        return dbError
+    }
+}
 
-module.exports = {
-    uploadQuestion: async(body) => {
-        try {
-            const newQuestion = new qaModel(body)
-            const data = await newQuestion.save()
-            return { statusCode: statusCode.ok, message: "Question uploaded successfully" }
-        } catch (error) {
-            return { statusCode: statusCode.unauthorized, message: statusText.dbError }
+export async function myQuestions(id) {
+    try {
+        const data = await qaModel.find({ studentID: id })
+        if (data.length !== 0) {
+            return { statusCode: statusCode.ok, message: data }
+        } else {
+            return { statusCode: statusCode.ok, message: [] }
         }
-    },
+    } catch (error) {
+        return dbError
+    }
+}
 
-    getMyQuestions: async(id) => {
-        try {
-            const data = await qaModel.find({ studentID: id })
-            if (data.length !== 0) {
-                return { statusCode: statusCode.ok, message: data }
-            } else {
-                return { statusCode: statusCode.ok, message: [] }
-            }
-        } catch (error) {
-            return { statusCode: statusCode.unauthorized, message: statusText.dbError }
+export async function allQuestions() {
+    try {
+        const data = await qaModel.find({ isAnswered: false })
+        if (data.length !== 0) {
+            return { statusCode: statusCode.ok, message: data }
+        } else {
+            return { statusCode: statusCode.ok, message: [] }
         }
-    },
+    } catch (error) {
+        return dbError
+    }
+}
 
-    getAllQuestions: async() => {
-        try {
-            const data = await qaModel.find({ isAnswered: false })
-            if (data.length !== 0) {
-                return { statusCode: statusCode.ok, message: data }
-            } else {
-                return { statusCode: statusCode.ok, message: [] }
-            }
-        } catch (error) {
-            return { statusCode: statusCode.unauthorized, message: statusText.dbError }
-        }
-    },
+export async function saveAnswer(value) {
+    const val = {
+        professorID: value.professorID,
+        professorName: value.professorName,
+        answer: value.answer,
+        isAnswered: value.isAnswered
+    }
+    try {
+        await qaModel.updateOne({ _id: value.questionID }, val)
+        return { statusCode: statusCode.ok, message: statusText.success }
+    } catch (error) {
+        return dbError
+    }
+}
 
-    submitQuestion: async(value) => {
-        const val = {
-            professorID: value.professorID,
-            professorName: value.professorName,
-            answer: value.answer,
-            isAnswered: value.isAnswered
+export async function dataForEdit(id) {
+    try {
+        const data = await qaModel.find({ professorID: id })
+        if (data.length !== 0) {
+            return { statusCode: statusCode.ok, message: data }
+        } else {
+            return { statusCode: statusCode.ok, message: [] }
         }
-        try {
-            const data = await qaModel.updateOne({ _id: value.questionID }, val)
-            return { statusCode: statusCode.ok, message: statusText.success }
-        } catch (error) {
-            return { statusCode: statusCode.unauthorized, message: statusText.dbError }
-        }
-    },
-    getDataForEdit: async(id) => {
-        try {
-            const data = await qaModel.find({ professorID: id })
-            if (data.length !== 0) {
-                return { statusCode: statusCode.ok, message: data }
-            } else {
-                return { statusCode: statusCode.ok, message: [] }
-            }
-        } catch (error) {
-            return { statusCode: statusCode.unauthorized, message: statusText.dbError }
-        }
+    } catch (error) {
+        return dbError
     }
 }

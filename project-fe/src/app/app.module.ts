@@ -3,23 +3,22 @@ import { BrowserModule } from "@angular/platform-browser";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { AuthService } from "./user-management/shared/service/auth.service";
 import { MaterialModule } from "./material/material.module";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { ToastrModule } from "ngx-toastr";
-import { InternalServerErrorComponent, PageNotFoundComponent, TokenInterceptor, DialogComponent } from "./core";
+import { TokenInterceptor } from "./core";
+import { AuthService } from "./user-management";
+import { SharedModule } from "./shared/shared.module";
 
 @NgModule({
   declarations: [
-    AppComponent,
-    DialogComponent,
-    PageNotFoundComponent,
-    InternalServerErrorComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    SharedModule,
     MaterialModule,
     HttpClientModule,
     ToastrModule.forRoot({

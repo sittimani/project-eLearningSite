@@ -1,11 +1,13 @@
-const router = require('express').Router()
-const authController = require('../controllers/auth-controller')
-const getter = require('../middleware/verifyToken')
+import { Router } from "express"
+import { userLogin, forgotPassword, updatePassword, verifyUser } from "../controllers/auth-controller.js"
+import { verifyToken } from "../middleware/verifyToken.js"
 
-router.post('/login', authController.userLogin)
-router.post('/update-password', getter.verifyToken, authController.updatePassword)
+const router = Router()
 
-router.get('/verifyUser/:id', authController.verifyUser)
-router.post('/forgot-password', authController.forgotPassword)
+router.post('/login', userLogin)
+router.post('/update-password', verifyToken, updatePassword)
 
-module.exports = router
+router.get('/verifyUser/:id', verifyUser)
+router.post('/forgot-password', forgotPassword)
+
+export default router 

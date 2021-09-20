@@ -1,6 +1,6 @@
-module.exports = {
-    verificationMail: (id) => {
-        const data = `
+
+export function verificationMail(id) {
+    const data = `
 Hi,
 
 Greetings.
@@ -8,11 +8,11 @@ Greetings.
 Thanks for register with iLearn. You need to verify you account before logging in. Please click the following link to verify.
 
 http://localhost:8080/verifyUser/${id}`
-        return data
-    }, 
+    return data
+}
 
-    newPassword: (id) => {
-        const data = `
+export function newPassword(id) {
+    const data = `
 Hi,
 
 Greetings.
@@ -21,6 +21,5 @@ Your iLearn Password was successfully reseted. You can use the following passwor
 
 password: ${id}`
 
-        return data
-    }
+    return data
 }

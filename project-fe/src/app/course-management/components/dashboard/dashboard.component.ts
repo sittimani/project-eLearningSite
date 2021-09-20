@@ -1,7 +1,13 @@
 import { Component, OnInit } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
-import { DialogService, ProfessorData, UpdatePermission, userAuth, UserInformation } from "src/app/core";
-import { UserProfileService } from "src/app/user-management";
+import { DialogService } from "src/app/shared/service/dialog.service";
+import {
+  ProfessorData,
+  UpdatePermission,
+  userAuth,
+  UserInformation,
+  UserProfileService
+} from "src/app/user-management";
 
 @Component({
   selector: "app-dashboard",
@@ -54,9 +60,9 @@ export class DashboardComponent implements OnInit {
       verified: "pending"
     };
     this.dialog.setDetails("Approve", "Deny", "Select button to update user status?");
-    this.dialog.openDialog().afterClosed().subscribe(x => {
-      x ? value["verified"] = "approved" : value["verified"] = "denied";
-      if (value["verified"] !== "pending")  
+    this.dialog.openDialog().afterClosed().subscribe((choice: boolean) => {
+      value["verified"] = choice ?  "approved" : choice === false ? "denied" : "pending";
+      if (value["verified"] !== "pending")
         this.updateStatus(value)
     })
   }

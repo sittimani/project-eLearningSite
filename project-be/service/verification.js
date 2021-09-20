@@ -1,24 +1,24 @@
-require('dotenv').config()
-const rolePrivillages = require('../models/rolesPrivilages.js')
-const roles = require('../models/role')
-const user = require('../models/user-model')
-const jwt = require('jsonwebtoken')
-const statusText = require('../constants/status-text').message
-const nodemailer = require('nodemailer')
-const emailContent = require('./emailContent')
+import * as dotenv from "dotenv"
+import jwt from "jsonwebtoken"
+import nodemailer from "nodemailer"
+import { verificationMail, newPassword } from "./emailContent.js"
+import rolePrivilage from "../models/rolesPrivilages.js"
+import roles from "../models/role.js"
+import user from "../models/user-model.js"
 
-module.exports = {
-    getMyRole: async function(roleName) {
+dotenv.config()
+
+export async function getMyRole(roleName) {
+    try {
         const data = await roles.findOne({ roleName: roleName })
-        if (data) {
-            const res = await rolePrivillages.findOne({ _id: data.id })
-            if (res) {
-                return res
-            }
-        }
+        const res = await rolePrivilage.findOne({ _id: data.id })
+        return res
+    } catch (error) {
         return 0
-    },
-    createToken: async(role, body) => {
+    }
+}
+export async function createToken(role, body) {
+    try {
         const res = await user.findOne({ userID: body._id })
         if (res) {
             const users = {
@@ -36,31 +36,31 @@ module.exports = {
             return responseData
         }
         return 0
-    },
-    sendMail: async(email, id, subject) => {
-
-        var transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: process.env.NODEMAILER_EMAIL,
-                pass: process.env.NODEMAILER_PASSWORD
-            }
-        });
-        var mailOptions = {
-            from: process.env.NODEMAILER_EMAIL,
-            to: email,
-            subject: subject
-        };
-        if (subject === 'Verification Mail') {
-            mailOptions['text'] = emailContent.verificationMail(id)
-        } else if (subject === 'New Password') {
-            mailOptions['text'] = emailContent.newPassword(id)
-        }
-
-        const info = await transporter.sendMail(mailOptions)
-        if (info) {
-            return true
-        }
-        return false;
+    } catch (error) {
+        return 0
     }
+}
+
+export async function sendMail(email, id, subject) {
+    let transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: process.env.NODEMAILER_EMAIL,
+            pass: process.env.NODEMAILER_PASSWORD
+        }
+    });
+    let mailOptions = {
+        from: process.env.NODEMAILER_EMAIL,
+        to: email,
+        subject: subject
+    };
+    if (subject === 'Verification Mail') {
+        mailOptions['text'] = verificationMail(id)
+    } else if (subject === 'New Password') {
+        mailOptions['text'] = newPassword(id)
+    }
+    const info = await transporter.sendMail(mailOptions)
+    if (info)
+        return true
+    return false;
 }

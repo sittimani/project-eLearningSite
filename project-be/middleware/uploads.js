@@ -1,13 +1,13 @@
-const multer = require('multer')
-const path= require('path')
-var name;
+import multer from "multer"
+import * as path from "path"
+
 const stroage = multer.diskStorage({
     destination: (req, file, callback) => {
         callback(null, 'uploads/')
     },
     filename: (req, file, callback) => {
         let ext = path.extname(file.originalname)
-        name = Date.now()+ext
+        let name = Date.now() + ext
         callback(null, name)
     }
 })
@@ -26,6 +26,4 @@ const upload = multer({
     }
 })
 
-module.exports = {
-    upload: upload
-}
+export { upload }

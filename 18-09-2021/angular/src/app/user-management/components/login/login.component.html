@@ -1,0 +1,40 @@
+<div fxLayoutAlign="center center" class="main-div page-container">
+
+  <mat-card>
+    <mat-card-content>
+      <mat-toolbar color="primary">{{title}}</mat-toolbar>
+      <form fxLayout="column" class="login-form" [formGroup]="loginForm">
+
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email">
+        </mat-form-field>
+        <span class="error-message" *ngIf="getField('email')?.invalid && getField('email')?.touched">
+          <span class="error-message" *ngIf="getField('email').errors?.required">Email is required</span>
+          <span class="error-message" *ngIf="getField('email').errors?.email">Invalid Email Addess</span>
+        </span>
+
+        <mat-form-field appearance="outline" *ngIf="!isForgotPassword">
+          <mat-label>Password</mat-label>
+          <input matInput [type]="isHide ? 'password' : 'text'" formControlName="password">
+          <button mat-icon-button matSuffix (click)="isHide = !isHide">
+            <mat-icon>{{isHide ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+        </mat-form-field>
+        
+        <span class="error-message" *ngIf="getField('password')?.invalid && getField('password')?.touched">
+          <span class="error-message" *ngIf="getField('password').errors?.required">password is required</span>
+          <span class="error-message" *ngIf="getField('password').errors?.minlength">Minimum 8 letters required</span>
+        </span>
+
+        <button mat-raised-button type="button" color="primary" (click)="logIn()"
+          *ngIf="!isForgotPassword">Login</button>
+        <button mat-raised-button type="button" color="primary" (click)="resetPassword()" *ngIf="isForgotPassword"
+          class="reset-button">Reset Password</button>
+        <br>
+        <button mat-raised-button type="button" color="primary" (click)="triggerForgotPassword()"
+          *ngIf="!isForgotPassword">Forgotten Password?</button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

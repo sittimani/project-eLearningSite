@@ -1,0 +1,54 @@
+/* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.error-message {
+    color: red;
+    margin-bottom: 10px;
+}
+
+.no-item {
+    color: red;
+    font-size: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    margin-bottom: 300px;
+}
+
+.page-container {
+    min-height: 350px;
+    margin: 10px;
+}
+
+.main-div mat-card {
+    padding: 0;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 400px;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+    border: 1px solid #ddd;
+}
+
+th,
+td {
+    text-align: left;
+    padding: 10px;
+}
+
+tr:nth-child(even) {
+    background-color: #a18585c4
+}

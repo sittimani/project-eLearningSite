@@ -1,0 +1,13 @@
+
+
+.registration-form{
+    padding:20px
+}
+
+mat-radio-group, .fileInput{
+    margin-bottom: 10px;
+}
+
+.links{
+    margin-top: 10px;
+}

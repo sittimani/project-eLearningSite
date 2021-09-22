@@ -1,4 +1,4 @@
-import mongoose from "mongoose"
+import mongoose from 'mongoose'
 
 const Schema = mongoose.Schema
 
@@ -20,10 +20,16 @@ const roleSchema = new Schema({
     },
     createCourse: {
         type: Boolean
-    }
+    },
+    menu : [
+        {
+            name: String,
+            link: String
+        }
+    ]
 }, { timestamps: true, versionKey: false })
 
 
-const model = mongoose.model('rolePrivilage', roleSchema, "rolePrivilages")
+const model = mongoose.model('rolePrivilage', roleSchema, 'rolePrivilages')
 
 export default model 

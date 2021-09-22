@@ -1,13 +1,13 @@
-import multer from "multer"
-import * as path from "path"
+import multer from 'multer'
+import * as path from 'path'
 
 const stroage = multer.diskStorage({
     destination: (req, file, callback) => {
         callback(null, 'uploads/')
     },
     filename: (req, file, callback) => {
-        let ext = path.extname(file.originalname)
-        let name = Date.now() + ext
+        const ext = path.extname(file.originalname)
+        const name = Date.now() + ext
         callback(null, name)
     }
 })

@@ -17,57 +17,55 @@ import {
 export class AuthService {
 
   private serverAddress = environment.serverAddress
-  private behSubject: BehaviorSubject<boolean>;
-  public behSubject$: Observable<boolean>
+  private userLoggedIn: BehaviorSubject<boolean>;
+  public userLoggedIn$: Observable<boolean>
 
   constructor(private http: HttpClient) {
-    this.behSubject = new BehaviorSubject(Boolean(false))
-    this.behSubject$ = this.behSubject.asObservable()
+    this.userLoggedIn = new BehaviorSubject(Boolean(false))
+    this.userLoggedIn$ = this.userLoggedIn.asObservable()
   }
 
   public loggedIn(): void {
-    if (this.getToken()) {
-      this.behSubject.next(true)
-    } else {
-      this.behSubject.next(false)
-    }
+    this.getToken() ? this.userLoggedIn.next(true) : this.userLoggedIn.next(false);
   }
 
   public getToken(): string | null {
-    return localStorage.getItem("token")
+    return localStorage.getItem("token");
   }
 
   public loginAsUser(value: LoginCreditionals): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(this.serverAddress + "login", value)
+    return this.http.post<LoginResponse>(this.serverAddress + "login", value);
   }
 
   public registerAsUser(value: UserInformation): Observable<string> {
-    return this.http.post<string>(this.serverAddress + "register", value)
+    return this.http.post<string>(this.serverAddress + "register", value);
   }
 
   public updatePassword(value: ResetPassword): Observable<string> {
-    return this.http.post<string>(this.serverAddress + "update-password", value)
+    return this.http.post<string>(this.serverAddress + "update-password", value);
   }
 
   public forgotPassword(value: LoginCreditionals): Observable<string> {
-    return this.http.post<string>(this.serverAddress + "forgot-password", value)
+    return this.http.post<string>(this.serverAddress + "forgot-password", value);
   }
 
   public setToken(responseData: LoginResponse) {
     localStorage.setItem("token", responseData.accessToken);
-    localStorage.setItem("user", JSON.stringify(responseData.user.users))
-    localStorage.setItem("menu", JSON.stringify(responseData.menu))
-    this.loggedIn()
+    localStorage.setItem("user", JSON.stringify(responseData.user.users));
+    localStorage.setItem("menu", JSON.stringify(responseData.user.users.role.menu));
+    this.loggedIn();
   }
 
   public getUserDetails(): UserDetails {
-    const details: any = localStorage.getItem("user")
-    const originalData = JSON.parse(details)
-    return originalData
+    const details = localStorage.getItem("user");
+    let originalData;
+    if (details)
+      originalData = JSON.parse(details);
+    return originalData;
   }
 
   public logOut(): void {
-    localStorage.clear()
-    this.loggedIn()
+    localStorage.clear();
+    this.loggedIn();
   }
 }

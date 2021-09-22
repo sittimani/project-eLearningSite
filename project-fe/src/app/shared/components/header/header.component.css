@@ -1,0 +1,56 @@
+.navbar{
+    justify-content: space-between;
+}
+
+a{
+    padding: 10px;
+    margin-right: 10px;
+    font-size: 15px;
+    border-radius: 3px;
+    text-decoration: none;
+    color: white;
+}
+
+a:hover{
+    background-color: #0077ff;
+}
+
+.sideBarNav a{
+    display: block;
+    padding: 1rem;
+    padding-left: 40px;
+}
+
+.nav-link a{
+    display: block;
+    color: black;
+    margin-left: 10px;
+}
+
+mat-sidenav{
+    padding: 16px
+}
+
+mat-sidenav{
+    background-color: cornflowerblue;
+    width: 200px;
+}
+
+#menuButton{
+    display: none;
+}
+
+.close-button{
+    margin-left: 120px;
+    
+}
+
+@media screen and (max-width:732px) {
+    #menuButton{
+        display: inline-block;
+        margin-right: 10px;
+    }
+    .navigation{
+        display: none;
+    }
+}

@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { CanActivate, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
-import { AuthService } from "src/app/user-management/shared/service/auth.service";
+import { AuthService } from "src/app/user-management";
 import { routes } from "../shared/config/routes";
 
 @Injectable({
@@ -20,9 +20,9 @@ export class AuthGuard implements CanActivate {
     if (this.auth.getToken() && this.auth.getUserDetails()) {
       return this.checkPermission();
     } else {
-      this.auth.logOut()
+      this.auth.logOut();
       this.auth.loggedIn();
-      this.router.navigate(["login"])
+      this.router.navigate(["login"]);
       return false;
     }
   }
@@ -32,42 +32,38 @@ export class AuthGuard implements CanActivate {
       this.auth.loggedIn();
       return true;
     }
-    this.toastr.warning("You dont't have access to this url !!!", "Warning")
-    this.router.navigate(["home"])
+    this.toastr.warning("You dont't have access to this url !!!", "Warning");
+    this.router.navigate(["home"]);
     return false;
   }
 
   checkRoutePermission() {
     const role = this.auth.getUserDetails().role;
     if (role.createCourse && role.deleteCourse) {
-      return true
+      return true;
     } else if (role.updateDocument && role.createDocument) {
-      return this.checkProfessorRoute()
-    } else {
-      return this.checkStudentRoute()
+      return this.checkProfessorRoute();
     }
-
+    return this.checkStudentRoute();
   }
   checkProfessorRoute(): boolean {
-    const route = location.href;
-    let hasPermission = true;
-    routes.adminRoutes.forEach((path: string) => {
-      if (route.includes(path))
-        hasPermission = false
-    })
-    return hasPermission
+    return this.isRoutePresent(routes.adminRoutes)
   }
 
   checkStudentRoute(): boolean {
     const route = location.href;
     let hasPermission = true;
-    routes.adminRoutes.forEach((path: string) => {
-      if (route.includes(path))
-        hasPermission = false
-    })
-    routes.professorRoutes.forEach((path: string) => {
-      if (route.includes(path))
-        hasPermission = false
+    hasPermission = this.isRoutePresent(routes.adminRoutes);
+    hasPermission = this.isRoutePresent(routes.professorRoutes);
+    return hasPermission;
+  }
+
+  isRoutePresent(routes: string[]) {
+    const path = location.href;
+    let hasPermission = true;
+    routes.forEach((route: string) => {
+      if (path.includes(route))
+        hasPermission = false;
     })
     return hasPermission;
   }

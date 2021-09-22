@@ -14,16 +14,16 @@ export class TopicService {
   public shareTopic$: Observable<string>;
 
   constructor(private http: HttpClient) {
-    this.shareTopic = new BehaviorSubject("no")
-    this.shareTopic$ = this.shareTopic.asObservable()
+    this.shareTopic = new BehaviorSubject("no");
+    this.shareTopic$ = this.shareTopic.asObservable();
   }
   
   public getCourse(name: string): Observable<Topic[]> {
-    return this.http.get<Topic[]>(this.serverAddess + "course-topic/ " + name)
+    return this.http.get<Topic[]>(this.serverAddess + "course-topic/ " + name);
   }
 
   public updateCourse(value: TopicDetail): Observable<string> {
-    return this.http.put<string>(this.serverAddess + "update-topic", value)
+    return this.http.put<string>(this.serverAddess + "update-topic", value);
   }
 
   public getTopics(courseName: string): Observable<Topic> {
@@ -31,7 +31,7 @@ export class TopicService {
   }
 
   public deleteTopic(courseName: string, topicName: string): Observable<string> {
-    return this.http.delete<string>(this.serverAddess + "delete-topic", { body: { courseName: courseName, topicName: topicName } })
+    return this.http.delete<string>(this.serverAddess + "delete-topic", { body: { courseName: courseName, topicName: topicName } });
   }
 
   public triggerUpdateTopicForm(topic: string) {

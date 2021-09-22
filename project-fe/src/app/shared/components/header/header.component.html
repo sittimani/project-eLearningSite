@@ -1,0 +1,47 @@
+<mat-sidenav class="sideBarNav" [(opened)]="isOpen">
+    <button (click)="isOpen = !isOpen" class="close-button">
+        <mat-icon>close</mat-icon>
+    </button>
+    <ng-container [ngTemplateOutlet]="navigationItems"></ng-container>
+</mat-sidenav>
+
+
+<mat-toolbar color="primary" class="navbar">
+    <div>
+        <button id="menuButton" (click)="isOpen = !isOpen">
+            <mat-icon>menu</mat-icon>
+        </button>
+        <span>{{title}}</span>
+    </div>
+    <!-- Navigation Items -->
+    <div class="navigation" *ngIf="!isOpen">
+        <ng-container [ngTemplateOutlet]="navigationItems"></ng-container>
+    </div>
+</mat-toolbar>
+
+
+<ng-template #navigationItems>
+    <a (click)="takeQuestion()" *ngIf="isLoggedIn && isStudent">Ask
+        Question</a>
+    <span *ngFor="let item of menu">
+        <a [routerLink]="item.link">{{item.name}}</a>
+    </span>
+
+    <span *ngIf="!isLoggedIn">
+        <a routerLink="/register">Register</a>
+        <a routerLink="/login">Login</a>
+    </span>
+    <span *ngIf="isLoggedIn">
+        <!-- user navigation items -->
+        <a class="userName" [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger"
+            (mouseenter)="menuTrigger.openMenu()">{{userName}}</a>
+
+        <mat-menu #menu="matMenu" [overlapTrigger]="false">
+            <nav class="nav-link" (mouseleave)="menuTrigger.closeMenu()">
+                <a (click)="updateProfile()">Update Profile</a>
+                <a routerLink="resetpassword">Change Password</a>
+                <a (click)="logout()">Logout</a>
+            </nav>
+        </mat-menu>
+    </span>
+</ng-template>

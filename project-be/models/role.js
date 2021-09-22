@@ -1,4 +1,4 @@
-import mongoose from "mongoose"
+import mongoose from 'mongoose'
 
 const Schema = mongoose.Schema
 
@@ -9,6 +9,6 @@ const roleSchema = new Schema({
 }, { timestamps: true, versionKey: false })
 
 
-const model = mongoose.model('roles', roleSchema, "roles")
+const model = mongoose.model('roles', roleSchema, 'roles')
 
 export default model 

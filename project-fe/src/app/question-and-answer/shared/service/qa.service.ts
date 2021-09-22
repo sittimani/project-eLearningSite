@@ -25,7 +25,7 @@ export class QaService {
       width: "390px",
       panelClass: "confirm-dialog-cotainer",
       disableClose: true
-    })
+    });
   }
 
   public uploadQuestion(value: string): Observable<string> {

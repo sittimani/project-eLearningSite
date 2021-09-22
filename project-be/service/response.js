@@ -1,5 +1,5 @@
-import { statusCode } from "../constants/status-code.js"
-import { statusText } from "../constants/status-text.js"
+import { statusCode } from '../constants/status-code.js'
+import { statusText } from '../constants/status-text.js'
 
 export function sendResponse(response, data) {
     response.status(data.statusCode).json(data.message)

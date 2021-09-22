@@ -10,7 +10,7 @@ export interface TopicDetail {
 }
 
 export interface Topic {
-    [key: string]: CourseOverView | TopicDetail | string | any,
+    [key: string]: CourseOverView | any | TopicDetail | string ,
     _id: string,
     overview: CourseOverView,
     courseName: string,

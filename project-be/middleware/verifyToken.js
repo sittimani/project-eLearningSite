@@ -1,6 +1,6 @@
-import jwt from "jsonwebtoken"
-import { statusText } from "../constants/status-text.js"
-import * as dotenv from "dotenv"
+import jwt from 'jsonwebtoken'
+import { statusText } from '../constants/status-text.js'
+import * as dotenv from 'dotenv'
 
 dotenv.config()
 

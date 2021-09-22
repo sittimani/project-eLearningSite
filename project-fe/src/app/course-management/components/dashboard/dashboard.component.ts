@@ -33,7 +33,7 @@ export class DashboardComponent implements OnInit {
     this.dataForApproval = [];
     this.isNoUser = true;
     this.user.getPendingProfessor().subscribe((response: userAuth[]) => {
-      const count: number = response.length
+      const count: number = response.length;
       if (count !== 0) {
         this.isNoUser = false;
         response.forEach((element: userAuth) => {
@@ -63,7 +63,7 @@ export class DashboardComponent implements OnInit {
     this.dialog.openDialog().afterClosed().subscribe((choice: boolean) => {
       value["verified"] = choice ?  "approved" : choice === false ? "denied" : "pending";
       if (value["verified"] !== "pending")
-        this.updateStatus(value)
+        this.updateStatus(value);
     })
   }
 

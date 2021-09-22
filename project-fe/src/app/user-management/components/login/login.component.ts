@@ -46,7 +46,6 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       let value: LoginCreditionals = this.loginForm.value;
       this.auth.loginAsUser(value).subscribe((response: LoginResponse) => {
-        console.log(response)
         this.setToken(response);
       })
     } else {

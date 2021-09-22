@@ -9,16 +9,16 @@ import { DialogService } from "../../service/dialog.service";
 })
 export class DialogComponent {
 
-  public negButton!: string;
-  public posButton!: string;
-  public question!: string
+  public negativeButton!: string;
+  public positiveButton!: string;
+  public question!: string;
 
   constructor(
     private matDialog: MatDialogRef<DialogComponent>,
     private dialog: DialogService
   ) {
-    this.negButton = this.dialog.noButton;
-    this.posButton = this.dialog.yesButton;
+    this.negativeButton = this.dialog.noButton;
+    this.positiveButton = this.dialog.yesButton;
     this.question = this.dialog.question;
   }
 

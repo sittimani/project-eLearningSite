@@ -4,7 +4,8 @@ export interface Roles {
     createDocument: boolean,
     updateDocument: boolean,
     createCourse?: boolean,
-    deleteCourse?: boolean
+    deleteCourse?: boolean,
+    menu?: [Menu]
 }
 
 export interface ProfessorData {
@@ -40,16 +41,15 @@ export interface UserInformation {
 }
 
 export interface Menu {
-    link: string,
-    path: string
+    name: string,
+    link: string
 }
 
 export interface LoginResponse {
     accessToken: string,
     user: {
         users: UserDetails
-    },
-    menu: [ Menu ]
+    }
 }
 
 export interface ResetPassword {

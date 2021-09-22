@@ -7,9 +7,9 @@ import { DialogComponent } from "..";
 })
 export class DialogService {
 
-  public yesButton = ""
-  public noButton = ""
-  public question = ""
+  public yesButton = "";
+  public noButton = "";
+  public question = "";
 
   constructor(private dialog: MatDialog) { }
 

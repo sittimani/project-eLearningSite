@@ -9,6 +9,6 @@ import { AuthService } from "src/app/user-management";
 export class InternalServerErrorComponent {
 
   constructor(private auth: AuthService) {
-    this.auth.loggedIn()
+    this.auth.loggedIn();
   }
 }

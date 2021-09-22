@@ -56,11 +56,15 @@ export class TopicComponent implements OnInit {
     this.keys.forEach(key => {
       if (key === "overview") {
         this.overView = object[key]
-      } else if (!(key === "_id" || key === "courseName" || key === "updatedAt" || key === "createdAt")) {
+      } else if (!this.skipKey(key)) {
         this.keysDisplayed.push(key)
         this.topicsDisplayed.push(object[key])
       }
     })
+  }
+
+  private skipKey(key:string) {
+    return (key === "_id" || key === "courseName" || key === "updatedAt" || key === "createdAt");
   }
 
   public updateTopic(index: number): void {
@@ -72,8 +76,8 @@ export class TopicComponent implements OnInit {
   public deleteTopic(index: number): void {
     const topicName = this.keysDisplayed[index];
     this.dialog.setDetails("Ok", "Cancel", "Are you sure, you want to delete " + topicName + " topic?");
-    this.dialog.openDialog().afterClosed().subscribe((x) => {
-      if (x) {
+    this.dialog.openDialog().afterClosed().subscribe((choice: boolean) => {
+      if (choice) {
         this.topic.deleteTopic(this.courseName, topicName).subscribe((response: string) => {
           this.toastr.success(response, "Success");
           this.getCourse();
@@ -83,6 +87,6 @@ export class TopicComponent implements OnInit {
   }
 
   public triggerAddTopic(): void {
-    this.router.navigate(["topic/add/" + this.courseName])
+    this.router.navigate(["topic/add/" + this.courseName]);
   }
 }

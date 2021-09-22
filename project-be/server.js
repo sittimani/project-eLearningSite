@@ -1,12 +1,12 @@
-import * as dotenv from "dotenv"
-import cors from "cors"
-import express from "express"
-import { connectToDB } from "./service/connection.js"
-import authRoute from "./routes/auth-route.js"
-import registerRoute from "./routes/register-route.js"
-import userRoute from "./routes/user-route.js"
-import courseRoute from "./routes/course-route.js"
-import qaRoute from "./routes/qa-route.js"
+import * as dotenv from 'dotenv'
+import cors from 'cors'
+import express from 'express'
+import { connectToDB } from './service/connection.js'
+import authRoute from './routes/auth-route.js'
+import registerRoute from './routes/register-route.js'
+import userRoute from './routes/user-route.js'
+import courseRoute from './routes/course-route.js'
+import qaRoute from './routes/qa-route.js'
 
 
 dotenv.config()
@@ -28,11 +28,10 @@ app.use(courseRoute)
 app.use(qaRoute)
 
 app.listen(port, async () => {
-    console.log("Server running in port " + port)
+    console.log('Server running in port ' + port)
     connectToDB().then(resolve => {
-        console.log("Connected to mongo")
+        console.log('Connected to mongo')
     }, reject => {
-        console.log(reject);
-        console.log("Not connected")
+        console.log('Not connected')
     })
 })

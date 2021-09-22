@@ -7,9 +7,11 @@ import { UserInformation, userAuth, UpdatePermission } from "../..";
 @Injectable({
   providedIn: "root"
 })
+
 export class UserProfileService {
 
-  private serverAddress = environment.serverAddress
+  private serverAddress = environment.serverAddress;
+
   constructor(private http: HttpClient) { }
 
   public getUserData(id: string): Observable<UserInformation> {
@@ -17,14 +19,14 @@ export class UserProfileService {
   }
 
   public updateUser(id: string, value: UserInformation): Observable<string> {
-    return this.http.put<string>(this.serverAddress + "update-profile/" + id, value)
+    return this.http.put<string>(this.serverAddress + "update-profile/" + id, value);
   }
 
   public getPendingProfessor(): Observable<userAuth[]> {
-    return this.http.get<userAuth[]>(this.serverAddress + "pending-professor")
+    return this.http.get<userAuth[]>(this.serverAddress + "pending-professor");
   }
 
-  public userPermission(val: UpdatePermission): Observable<string> {
-    return this.http.post<string>(this.serverAddress + "update-permission", val)
+  public userPermission(value: UpdatePermission): Observable<string> {
+    return this.http.post<string>(this.serverAddress + "update-permission", value);
   }
 }

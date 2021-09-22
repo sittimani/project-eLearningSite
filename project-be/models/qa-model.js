@@ -1,4 +1,4 @@
-import  mongoose from "mongoose"
+import  mongoose from 'mongoose'
 
 const Schema = mongoose.Schema
 const questionSchema = new Schema({
@@ -25,6 +25,6 @@ const questionSchema = new Schema({
     }
 }, { timestamps: true, versionKey: false })
 
-const model = mongoose.model('qa', questionSchema, "questions")
+const model = mongoose.model('qa', questionSchema, 'questions')
 
 export default model 

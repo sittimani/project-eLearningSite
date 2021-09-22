@@ -22,7 +22,7 @@ const routes: Routes = [
     path: "q&a",
     loadChildren: () => import("./question-and-answer/question-and-answer.module").then(m => m.QuestionAndAnswerModule)
   }, {
-    path: "internalserverproblem",
+    path: "internal-server-error",
     component: InternalServerErrorComponent
   }, {
     path: "**",

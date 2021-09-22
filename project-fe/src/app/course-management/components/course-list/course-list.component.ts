@@ -42,7 +42,7 @@ export class CourseListComponent implements OnInit {
     this.allCourse = [];
     this.courseService.getAllCourse().subscribe((response: Topic[]) => {
       let responseData = response;
-      const count: number = responseData.length
+      const count: number = responseData.length;
       this.isNoCourse = true;
       if (count !== 0) {
         this.allCourse = responseData.map(this.formatDocument)

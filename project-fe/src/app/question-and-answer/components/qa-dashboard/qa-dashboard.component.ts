@@ -71,7 +71,7 @@ export class QaDashboardComponent implements OnInit {
     this.qaService.getAllQuestions().subscribe((response: QAModel[]) => {
       const responseData = response;
       this.dataToDisplay = responseData;
-    })
+    });
   }
 
   private getDataForEdit(): void {
@@ -79,7 +79,7 @@ export class QaDashboardComponent implements OnInit {
     this.qaService.getDataForEdit(this.userID).subscribe((response: QAModel[]) => {
       const data = response;
       const count: number = data.length;
-      count === 0 ? this.toastr.error("No Data Found!!!", "error") : this.dataToDisplay = data;
+      count !== 0 ? this.dataToDisplay = data : this.toastr.error("No Data Found!!!", "error") ;
     })
   }
 
@@ -95,7 +95,7 @@ export class QaDashboardComponent implements OnInit {
           answer: ans,
           isAnswered: true
         };
-        ans !== "" ? this.submitAnswer(val) : this.toastr.error(UserErrors.InvalidForm, "Error")
+        ans !== "" ? this.submitAnswer(val) : this.toastr.error(UserErrors.InvalidForm, "Error");
       }
     })
   }
@@ -103,7 +103,7 @@ export class QaDashboardComponent implements OnInit {
   private submitAnswer(val: Answer): void {
     this.qaService.submitAnswer(val).subscribe((response: string) => {
       this.toastr.success(response, "Success");
-      this.router.url.includes("my-answers") ? this.getDataForEdit() : this.getDataForProfessor()
+      this.router.url.includes("my-answers") ? this.getDataForEdit() : this.getDataForProfessor();
     })
   }
 

@@ -1,4 +1,4 @@
-import { Router } from "express"
+import { Router } from 'express'
 import {
     getAvailableCourse,
     getAllTopics,
@@ -8,13 +8,13 @@ import {
     picUpload,
     deleteEntireCourse,
     deleteParticularTopic
-} from "../controllers/course-controller.js"
-import * as upload from "../middleware/uploads.js"
+} from '../controllers/course-controller.js'
+import * as upload from '../middleware/uploads.js'
 import{
     verifyToken,
     isProfessor,
     isAdmin
-} from "../middleware/verifyToken.js"
+} from '../middleware/verifyToken.js'
 
 const uploads = upload.upload
 

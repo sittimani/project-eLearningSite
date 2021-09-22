@@ -34,14 +34,14 @@ export class CourseFormComponent {
       overview: ["", [Validators.required, Validators.minLength(30)]],
       description: ["", [Validators.required, Validators.minLength(100)]]
     });
-    this.file = new FormData()
+    this.file = new FormData();
   }
 
 
   public onFileSelected(event: Event): void {
     this.isFileUploaded = false;
     const fileList = (event.currentTarget as HTMLInputElement).files;
-    const coursePic: File = (fileList as FileList)[0]
+    const coursePic: File = (fileList as FileList)[0];
     const name = coursePic.name;
     if (name.includes("png") || name.includes("jpeg") || name.includes("jpg")) {
       this.isFileUploaded = true;
@@ -52,7 +52,7 @@ export class CourseFormComponent {
   public addnewCourse(): void {
     if (this.isFileUploaded && this.courseForm.valid) {
       let value = this.courseForm.value;
-      value.courseName = value.courseName.toLowerCase()
+      value.courseName = value.courseName.toLowerCase();
       this.course.getPicName(this.file).subscribe((response: string) => {
         value.url = response;
         this.course.uploadCourse(value).subscribe((response: string) => {
@@ -62,7 +62,7 @@ export class CourseFormComponent {
       })
     } else {
       const error = !this.isFileUploaded ? UserErrors.InvalidFile : UserErrors.InvalidForm;
-      this.toastr.error(error, "Error")
+      this.toastr.error(error, "Error");
     }
   }
 

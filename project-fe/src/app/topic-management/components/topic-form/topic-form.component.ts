@@ -14,11 +14,11 @@ import { Topic, TopicDetail, TopicService } from "../..";
 export class TopicFormComponent implements OnInit {
 
   public isTopicAddForm = true;
-  public title = "Topic Adding Form"
+  public title = "Topic Adding Form";
   public url!: string;
-  private courseName!: string
-  private teacherID!: string
-  public courseForm: FormGroup
+  private courseName!: string;
+  private teacherID!: string;
+  public courseForm: FormGroup;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -33,7 +33,7 @@ export class TopicFormComponent implements OnInit {
       topicName: ["", [Validators.required, Validators.minLength(5)]],
       documentLink: ["", [Validators.required, Validators.minLength(5)]],
       tutorialLink: ["", [Validators.required, Validators.minLength(5)]]
-    })
+    });
   }
 
   ngOnInit(): void {
@@ -82,7 +82,7 @@ export class TopicFormComponent implements OnInit {
     if (topicName === "no")
       this.router.navigate(["home"]);
     this.topic.getTopics(this.courseName).subscribe((response: Topic) => {
-      const topicData: TopicDetail = response[topicName]
+      const topicData: TopicDetail = response[topicName];
       this.courseForm.get("topicName")?.setValue(topicName);
       this.courseForm.patchValue(topicData);
       this.courseForm.get("topicName")?.disable();

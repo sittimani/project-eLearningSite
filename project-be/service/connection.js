@@ -1,4 +1,4 @@
-import mongoose from "mongoose"
+import mongoose from 'mongoose'
 
 export async function connectToDB() {
     const db = process.env.DB_ADDRESS + process.env.DBNAME
@@ -12,7 +12,6 @@ export async function connectToDB() {
     return new Promise((resolve, reject) => {
         mongoose.connect(db, options, error => {
             if (error) {
-                console.log(error)
                 reject(false)
             } else {
                 resolve(true)

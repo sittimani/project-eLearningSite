@@ -1,12 +1,12 @@
-import { Router } from "express"
-import { verifyToken, isProfessor, isAdmin } from "../middleware/verifyToken.js"
+import { Router } from 'express'
+import { verifyToken, isProfessor, isAdmin } from '../middleware/verifyToken.js'
 import {
     uploadQuestion,
     getMyQuestions,
     getAllQuestions,
     getDataForEdit,
     submitAnswer
-} from "../controllers/qa-controller.js"
+} from '../controllers/qa-controller.js'
 
 const router = Router()
 

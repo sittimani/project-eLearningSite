@@ -24,7 +24,8 @@
                 <mat-card-actions>
                     <span>
                         <button mat-button (click)="exploreCourse(course.name)">Explore</button>
-                        <button mat-button *ngIf="roles.deleteCourse" (click)="deleteCourse(course.name)">Delete</button>
+                        <button mat-button *ngIf="roles.deleteCourse"
+                            (click)="deleteCourse(course.name)">Delete</button>
                     </span>
                 </mat-card-actions>
             </mat-card>

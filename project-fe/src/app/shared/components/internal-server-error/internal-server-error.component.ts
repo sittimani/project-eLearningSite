@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { AuthService } from "src/app/user-management";
 
 @Component({
@@ -6,9 +6,11 @@ import { AuthService } from "src/app/user-management";
   templateUrl: "./internal-server-error.component.html",
   styleUrls: ["./internal-server-error.component.css"]
 })
-export class InternalServerErrorComponent {
+export class InternalServerErrorComponent implements OnInit {
 
-  constructor(private auth: AuthService) {
+  constructor(private auth: AuthService) { }
+
+  ngOnInit(): void {
     this.auth.loggedIn();
   }
 }

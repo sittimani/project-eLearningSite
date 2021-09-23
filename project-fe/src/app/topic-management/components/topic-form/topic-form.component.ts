@@ -1,8 +1,13 @@
 import { Component, OnInit } from "@angular/core";
-import { FormGroup, FormBuilder, Validators, FormControl } from "@angular/forms";
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  FormControl
+} from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
-import { UserErrors } from "src/app/core";
+import { ErrorMessage, UserErrors } from "src/app/core";
 import { AuthService, UserDetails } from "src/app/user-management";
 import { Topic, TopicDetail, TopicService } from "../..";
 
@@ -19,6 +24,7 @@ export class TopicFormComponent implements OnInit {
   private courseName!: string;
   private teacherID!: string;
   public courseForm: FormGroup;
+  public errorMessage: ErrorMessage;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -31,9 +37,10 @@ export class TopicFormComponent implements OnInit {
     this.courseForm = this.formBuilder.group({
       courseName: ["", [Validators.required, Validators.minLength(3)]],
       topicName: ["", [Validators.required, Validators.minLength(5)]],
-      documentLink: ["", [Validators.required, Validators.minLength(5)]],
-      tutorialLink: ["", [Validators.required, Validators.minLength(5)]]
+      documentLink: ["", [Validators.required, Validators.minLength(10)]],
+      tutorialLink: ["", [Validators.required, Validators.minLength(10)]]
     });
+    this.errorMessage = new ErrorMessage();
   }
 
   ngOnInit(): void {
@@ -41,10 +48,10 @@ export class TopicFormComponent implements OnInit {
     this.courseName = this.activatedRoute.snapshot.params["name"];
     this.courseForm.patchValue({ courseName: this.courseName });
     this.courseForm.controls["courseName"].disable();
-    this.checkPrivilages();
+    this.checkPage();
   }
 
-  private checkPrivilages(): void {
+  private checkPage(): void {
     const details: UserDetails = this.auth.getUserDetails();
     if (details) {
       this.teacherID = details._id;
@@ -81,8 +88,8 @@ export class TopicFormComponent implements OnInit {
     })
     if (topicName === "no")
       this.router.navigate(["home"]);
-    this.topic.getTopics(this.courseName).subscribe((response: Topic) => {
-      const topicData: TopicDetail = response[topicName];
+    this.topic.getCourse(this.courseName).subscribe((response: Topic) => {
+      const topicData: TopicDetail = response[0][topicName];
       this.courseForm.get("topicName")?.setValue(topicName);
       this.courseForm.patchValue(topicData);
       this.courseForm.get("topicName")?.disable();

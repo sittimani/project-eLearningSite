@@ -1,20 +1,21 @@
 
 import { Router } from 'express'
-import {
-    verifyToken,
-    isAdmin
-}from '../middleware/verifyToken.js'
-import {
-    getUserData,
-    updateUser,
-    getPendingProfessor,
-    userPermission
-} from '../controllers/user-controller.js'
+import Token from '../middleware/verifyToken.js'
+import UserController from '../controllers/user-controller.js'
+import { use } from '../service/response.js'
 
 const router = Router()
-router.get('/my-details/:id', verifyToken, getUserData)
-router.put('/update-profile/:id', verifyToken, updateUser)
-router.get('/pending-professor', verifyToken, getPendingProfessor)
-router.post('/update-permission', [verifyToken, isAdmin], userPermission)
+
+const userController = new UserController()
+const tokenService = new Token()
+
+router.get('/my-details/:id',
+    [tokenService.verifyToken], use(userController.getUserData))
+router.put('/update-profile/:id',
+    [tokenService.verifyToken], use(userController.updateUser))
+router.get('/pending-professor',
+    [tokenService.verifyToken, tokenService.isAdmin], use(userController.getPendingProfessor))
+router.put('/update-permission',
+    [tokenService.verifyToken, tokenService.isAdmin], use(userController.userPermission))
 
 export default router

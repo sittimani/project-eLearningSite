@@ -3,8 +3,8 @@ import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { RouterTestingModule } from "@angular/router/testing";
 import { ToastrModule } from "ngx-toastr";
 import { Observable } from "rxjs";
-import { Topic } from "src/app/core";
 import { MaterialModule } from "src/app/material/material.module";
+import { Topic } from "src/app/topic-management";
 import { AuthService } from "src/app/user-management";
 import { CourseService } from "../..";
 
@@ -62,12 +62,12 @@ describe("CourseListComponent", () => {
         updatedAt: ""
       }
     ];
-    let service = fixture.debugElement.injector.get(CourseService)
-    spyOn(service, "getAllCourse").and.callFake(() => {
-      return new Observable<Topic[]>(Subscriber => {
-        Subscriber.next(data)
-      })
-    })
+    // let service = fixture.debugElement.injector.get(CourseService)
+    // spyOn(service, "getAllCourse").and.callFake(() => {
+    //   return new Observable<Topic[]>(Subscriber => {
+    //     Subscriber.next(data)
+    //   })
+    // })
 
     const someData = {
       id: "613f00e84c61b001e44c2465",
@@ -75,8 +75,8 @@ describe("CourseListComponent", () => {
       shortDescription: "Django is a web application framework.",
       url: "http://localhost:8080/uploads/" + "1631518952076.png"
     }
-    component.getCourses();
-    fixture.detectChanges()
+    component.formatCourse(data)
+     fixture.detectChanges()
     expect(component.allCourse[0]).toEqual(someData)
   })
 });

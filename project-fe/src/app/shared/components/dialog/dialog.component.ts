@@ -23,6 +23,6 @@ export class DialogComponent {
   }
 
   public closeDialog() {
-    this.matDialog.close()
+    this.matDialog.close();
   }
 }

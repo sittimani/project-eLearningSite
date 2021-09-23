@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { Router, ActivatedRoute } from "@angular/router";
+import { Router, ActivatedRoute, Data } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { CourseOverView } from "src/app/course-management";
 import { DialogService } from "src/app/shared";
@@ -14,7 +14,11 @@ import { Topic, TopicDetail, TopicService } from "../..";
 })
 export class TopicComponent implements OnInit {
 
-  public roles!: Roles;
+  public roles: Roles = {
+    readDocument: false,
+    createDocument: false,
+    updateDocument: false
+  };
   public keysDisplayed: string[] = [];
   private keys!: string[];
   public courseName = "";
@@ -36,34 +40,31 @@ export class TopicComponent implements OnInit {
 
   ngOnInit(): void {
     this.courseName = this.currentRoute.snapshot.params["name"];
-    this.getCourse();
-    const userDetails = this.auth.getUserDetails();
-    if (userDetails) {
-      this.roles = userDetails.role;
-    }
-  }
-
-  private getCourse(): void {
-    this.topicsDisplayed = []
-    this.topic.getCourse(this.courseName).subscribe((response: Topic[]) => {
-      const data = response;
-      data[0] ? this.reStructureData(data[0]) : this.isNoCourse = true;
+    this.currentRoute.data.subscribe((response: Data) => {
+      const data = response.data;
+      if (data !== undefined && data[0] !== undefined && data.length) {
+        this.reStructureData(data[0]);
+        this.isNoCourse = true;
+      }
     })
+    const userDetails = this.auth.getUserDetails();
+    if (userDetails)
+      this.roles = userDetails.role;
   }
 
-  private reStructureData(object: Topic): void {
+  public reStructureData(object: Topic): void {
     this.keys = Object.keys(object);
     this.keys.forEach(key => {
       if (key === "overview") {
-        this.overView = object[key]
+        this.overView = object[key];
       } else if (!this.skipKey(key)) {
-        this.keysDisplayed.push(key)
-        this.topicsDisplayed.push(object[key])
+        this.keysDisplayed.push(key);
+        this.topicsDisplayed.push(object[key]);
       }
     })
   }
 
-  private skipKey(key:string) {
+  private skipKey(key: string) {
     return (key === "_id" || key === "courseName" || key === "updatedAt" || key === "createdAt");
   }
 
@@ -80,10 +81,12 @@ export class TopicComponent implements OnInit {
       if (choice) {
         this.topic.deleteTopic(this.courseName, topicName).subscribe((response: string) => {
           this.toastr.success(response, "Success");
-          this.getCourse();
-        })
+          this.router.navigateByUrl("blank").then(() => {
+            this.router.navigateByUrl("topic/" + this.courseName);
+          });
+        });
       }
-    })
+    });
   }
 
   public triggerAddTopic(): void {

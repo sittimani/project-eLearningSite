@@ -27,7 +27,7 @@ export class AuthGuard implements CanActivate {
     }
   }
 
-  checkPermission(): boolean {
+  private checkPermission(): boolean {
     if (this.checkRoutePermission()) {
       this.auth.loggedIn();
       return true;
@@ -37,28 +37,27 @@ export class AuthGuard implements CanActivate {
     return false;
   }
 
-  checkRoutePermission() {
+  private checkRoutePermission() {
     const role = this.auth.getUserDetails().role;
-    if (role.createCourse && role.deleteCourse) {
+    if (role.createCourse && role.deleteCourse)
       return true;
-    } else if (role.updateDocument && role.createDocument) {
+    else if (role.updateDocument && role.createDocument)
       return this.checkProfessorRoute();
-    }
     return this.checkStudentRoute();
   }
-  checkProfessorRoute(): boolean {
+
+  private checkProfessorRoute(): boolean {
     return this.isRoutePresent(routes.adminRoutes)
   }
 
-  checkStudentRoute(): boolean {
-    const route = location.href;
+  private checkStudentRoute(): boolean {
     let hasPermission = true;
     hasPermission = this.isRoutePresent(routes.adminRoutes);
     hasPermission = this.isRoutePresent(routes.professorRoutes);
     return hasPermission;
   }
 
-  isRoutePresent(routes: string[]) {
+  private isRoutePresent(routes: string[]) {
     const path = location.href;
     let hasPermission = true;
     routes.forEach((route: string) => {

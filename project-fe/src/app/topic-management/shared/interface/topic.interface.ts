@@ -1,6 +1,5 @@
 import { CourseOverView } from "src/app/course-management";
 
-
 export interface TopicDetail {
     documentLink: string,
     tutorialLink: string,

@@ -1,7 +1,6 @@
 import { HttpClientModule } from "@angular/common/http";
 import { TestBed } from "@angular/core/testing";
 import { RouterTestingModule } from "@angular/router/testing";
-import { Observable } from "rxjs";
 
 import { CourseService } from "./course.service";
 
@@ -12,8 +11,7 @@ describe("CourseService", () => {
     TestBed.configureTestingModule({
       imports: [
         HttpClientModule,
-        RouterTestingModule,
-        Observable
+        RouterTestingModule
       ]
     });
     service = TestBed.inject(CourseService);

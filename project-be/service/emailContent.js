@@ -7,7 +7,7 @@ Greetings.
 
 Thanks for register with iLearn. You need to verify you account before logging in. Please click the following link to verify.
 
-http://localhost:8080/verifyUser/${id}`
+http://localhost:8080/verify-user/${id}`
     return data
 }
 

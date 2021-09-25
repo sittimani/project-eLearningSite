@@ -11,14 +11,16 @@ export default class QAService {
     }
 
     async myQuestions(id) {
-        const data = await qaModel.find({ studentID: id })
+
+        const data = await qaModel.find({ studentID: id }, { updatedAt: 0, createdAt: 0 })
         if (data.length !== 0)
             return { statusCode: statusCode.ok, message: data }
         return { statusCode: statusCode.ok, message: [] }
     }
 
     async allQuestions() {
-        const data = await qaModel.find({ isAnswered: false })
+
+        const data = await qaModel.find({ isAnswered: false }, { updatedAt: 0, createdAt: 0 })
         if (data.length !== 0)
             return { statusCode: statusCode.ok, message: data }
         return { statusCode: statusCode.ok, message: [] }
@@ -36,7 +38,7 @@ export default class QAService {
     }
 
     async dataForEdit(id) {
-        const data = await qaModel.find({ professorID: id })
+        const data = await qaModel.find({ professorID: id }, { updatedAt: 0, createdAt: 0 })
         if (data.length !== 0)
             return { statusCode: statusCode.ok, message: data }
         return { statusCode: statusCode.ok, message: [] }

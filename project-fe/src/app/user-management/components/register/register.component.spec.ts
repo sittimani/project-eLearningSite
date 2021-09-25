@@ -37,4 +37,30 @@ describe("RegisterComponent", () => {
   it("should create", () => {
     expect(component).toBeTruthy();
   });
+
+  it("should be invalid form", () => {
+    expect(component.registrationForm.valid).toBeFalse();
+  })
+
+  it("should be valid form", () => {
+    const data = {
+      name: "mani",
+      age: 21,
+      gender: "male",
+      phone: "1234567890",
+      email: "manikandansitti@gmail.com",
+      password: "123456789765",
+      confirmPassword: "123456789765",
+      workingAt: "Aspire"
+    }
+    component.registrationForm.patchValue(data);
+    fixture.detectChanges();
+    expect(component.registrationForm.valid).toBeTrue()
+  })
+
+  it("should disable fields", () => {
+    component.disableFieldForUpdate();
+    fixture.detectChanges();
+    expect(component.registrationForm.get("password")?.disabled).toBeTrue()
+  })
 });

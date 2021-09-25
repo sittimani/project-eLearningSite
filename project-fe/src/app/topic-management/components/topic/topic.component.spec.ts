@@ -4,7 +4,6 @@ import { RouterTestingModule } from "@angular/router/testing";
 import { ToastrModule } from "ngx-toastr";
 import { MaterialModule } from "src/app/material/material.module";
 import { Topic } from "../..";
-
 import { TopicComponent } from "./topic.component";
 
 describe("TopicComponent", () => {
@@ -34,8 +33,6 @@ describe("TopicComponent", () => {
         description: "Test Description"
       },
       courseName: "Test case",
-      updatedAt: "",
-      createdAt: "",
       components: {
         documentLink: "123",
         tutorialLink: "123"
@@ -63,6 +60,11 @@ describe("TopicComponent", () => {
     component.reStructureData(data);
     fixture.detectChanges();
     expect(component.keysDisplayed).toEqual(keys)
+  })
+
+
+  it("should return false", () => {
+    expect(component.skipKey("id")).toBe(false);
   })
 
 });

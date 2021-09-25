@@ -21,9 +21,7 @@ export interface userAuth {
     emailVerified: boolean,
     password: string,
     role: string,
-    verified: string,
-    createdAt: string,
-    updatedAt: string
+    verified: string
 }
 
 export interface UserInformation {
@@ -35,9 +33,7 @@ export interface UserInformation {
     password?: string,
     email?: string,
     workingAt?: string,
-    userID?: string,
-    createdAt?: string,
-    updatedAt?: string
+    userID?: string
 }
 
 export interface Menu {

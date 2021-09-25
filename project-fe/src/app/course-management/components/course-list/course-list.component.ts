@@ -2,10 +2,9 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Data, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { Topic } from "src/app/topic-management";
-import { AuthService, Roles } from "src/app/user-management";
+import { AuthService, Roles, UserDetails } from "src/app/user-management";
 import { environment } from "src/environments/environment";
 import { CourseList, CourseService } from "../..";
-import { UserDetails } from "src/app/user-management";
 import { DialogService } from "src/app/shared";
 
 @Component({
@@ -13,6 +12,7 @@ import { DialogService } from "src/app/shared";
   templateUrl: "./course-list.component.html",
   styleUrls: ["./course-list.component.css"]
 })
+
 export class CourseListComponent implements OnInit {
 
   public roles: Roles = {
@@ -38,7 +38,7 @@ export class CourseListComponent implements OnInit {
     if (UserDetails)
       this.roles = UserDetails.role;
     this.activatedRoute.data.subscribe((response: Data) => {
-      this.formatCourse(response.data)
+      this.formatCourse(response.data);
     })
   }
 

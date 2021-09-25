@@ -23,7 +23,7 @@ export class TopicFormComponent implements OnInit {
   public url!: string;
   private courseName!: string;
   private teacherID!: string;
-  public courseForm: FormGroup;
+  public topicForm: FormGroup;
   public errorMessage: ErrorMessage;
 
   constructor(
@@ -34,7 +34,7 @@ export class TopicFormComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private toastr: ToastrService
   ) {
-    this.courseForm = this.formBuilder.group({
+    this.topicForm = this.formBuilder.group({
       courseName: ["", [Validators.required, Validators.minLength(3)]],
       topicName: ["", [Validators.required, Validators.minLength(5)]],
       documentLink: ["", [Validators.required, Validators.minLength(10)]],
@@ -46,8 +46,8 @@ export class TopicFormComponent implements OnInit {
   ngOnInit(): void {
     this.url = this.router.url;
     this.courseName = this.activatedRoute.snapshot.params["name"];
-    this.courseForm.patchValue({ courseName: this.courseName });
-    this.courseForm.controls["courseName"].disable();
+    this.topicForm.patchValue({ courseName: this.courseName });
+    this.topicForm.controls["courseName"].disable();
     this.checkPage();
   }
 
@@ -68,8 +68,8 @@ export class TopicFormComponent implements OnInit {
   }
 
   public addTopic(): void {
-    if (this.courseForm.valid) {
-      let value = this.courseForm.value;
+    if (this.topicForm.valid) {
+      let value = this.topicForm.value;
       value.teacherID = this.teacherID;
       value.courseName = this.courseName;
       this.topic.updateCourse(value).subscribe((response: string) => {
@@ -90,18 +90,18 @@ export class TopicFormComponent implements OnInit {
       this.router.navigate(["home"]);
     this.topic.getCourse(this.courseName).subscribe((response: Topic) => {
       const topicData: TopicDetail = response[0][topicName];
-      this.courseForm.get("topicName")?.setValue(topicName);
-      this.courseForm.patchValue(topicData);
-      this.courseForm.get("topicName")?.disable();
+      this.topicForm.get("topicName")?.setValue(topicName);
+      this.topicForm.patchValue(topicData);
+      this.topicForm.get("topicName")?.disable();
     })
   }
 
   public updateTopic(): void {
-    if (this.courseForm.valid) {
-      let value = this.courseForm.value;
+    if (this.topicForm.valid) {
+      let value = this.topicForm.value;
       value.teacherID = this.teacherID;
       value.courseName = this.courseName;
-      value.topicName = this.courseForm.get("topicName")?.value;
+      value.topicName = this.topicForm.get("topicName")?.value;
       this.topic.updateCourse(value).subscribe((response: string) => {
         this.toastr.success(response, "Success");
         this.router.navigate(["topic/" + this.courseName]);
@@ -116,7 +116,7 @@ export class TopicFormComponent implements OnInit {
   }
 
   public getField(name: string): FormControl {
-    return this.courseForm.get(name) as FormControl;
+    return this.topicForm.get(name) as FormControl;
   }
 
 }

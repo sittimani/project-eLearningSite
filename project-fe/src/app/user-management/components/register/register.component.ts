@@ -106,16 +106,16 @@ export class RegisterComponent implements OnInit {
 
   private loadUserData(): void {
     this.userProfile.getUserData(this.id).subscribe((response: UserInformation) => {
-      if (!response) {
+      if (response) {
+        this.registrationForm.patchValue(response);
+      } else {
         this.toastr.error("Invalid User", "Error");
         this.router.navigate(["home"]);
-      } else {
-        this.registrationForm.patchValue(response);
       }
     })
   }
 
-  private disableFieldForUpdate(): void {
+  public disableFieldForUpdate(): void {
     this.getField("password")?.disable();
     this.getField("confirmPassword")?.disable();
     this.getField("email")?.disable();

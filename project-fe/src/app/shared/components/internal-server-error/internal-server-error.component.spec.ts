@@ -1,5 +1,7 @@
 import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { MaterialModule } from "src/app/material/material.module";
 
 import { InternalServerErrorComponent } from "./internal-server-error.component";
 
@@ -10,7 +12,9 @@ describe("InternalServerErrorComponent", () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        HttpClientTestingModule
+        HttpClientTestingModule,
+        MaterialModule,
+        BrowserAnimationsModule
       ],
       declarations: [ InternalServerErrorComponent ]
     })

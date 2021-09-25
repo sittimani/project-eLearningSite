@@ -64,8 +64,8 @@ export class TopicComponent implements OnInit {
     })
   }
 
-  private skipKey(key: string) {
-    return (key === "_id" || key === "courseName" || key === "updatedAt" || key === "createdAt");
+  public skipKey(key: string) {
+    return (key === "_id" || key === "courseName");
   }
 
   public updateTopic(index: number): void {

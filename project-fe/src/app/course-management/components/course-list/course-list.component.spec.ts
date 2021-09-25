@@ -6,7 +6,6 @@ import { Observable } from "rxjs";
 import { MaterialModule } from "src/app/material/material.module";
 import { Topic } from "src/app/topic-management";
 import { AuthService } from "src/app/user-management";
-import { CourseService } from "../..";
 
 import { CourseListComponent } from "./course-list.component";
 

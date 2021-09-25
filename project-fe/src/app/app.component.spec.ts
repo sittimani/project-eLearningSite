@@ -5,6 +5,7 @@ import { RouterTestingModule } from "@angular/router/testing";
 import { ToastrModule } from "ngx-toastr";
 import { AppComponent } from "./app.component";
 import { MaterialModule } from "./material/material.module";
+import { SharedModule } from "./shared/shared.module";
 
 describe("AppComponent", () => {
   beforeEach(async () => {
@@ -14,6 +15,7 @@ describe("AppComponent", () => {
         BrowserAnimationsModule,
         HttpClientModule,
         MaterialModule,
+        SharedModule,
         ToastrModule.forRoot()
       ],
       declarations: [

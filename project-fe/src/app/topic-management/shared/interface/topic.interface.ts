@@ -12,7 +12,5 @@ export interface Topic {
     [key: string]: CourseOverView | any | TopicDetail | string ,
     _id: string,
     overview: CourseOverView,
-    courseName: string,
-    updatedAt: string,
-    createdAt: string
+    courseName: string
 }

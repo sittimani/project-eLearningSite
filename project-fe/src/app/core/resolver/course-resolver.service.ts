@@ -11,6 +11,6 @@ export class CourseResolverService implements Resolve<Data> {
   constructor(private course: CourseService) { }
 
   resolve(route: ActivatedRouteSnapshot): Observable<Data> {
-    return this.course.getAllCourse()
+    return this.course.getAllCourse();
   }
 }

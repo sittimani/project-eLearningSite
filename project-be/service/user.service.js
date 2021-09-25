@@ -12,7 +12,7 @@ export default class User {
     }
 
     async userData(id) {
-        const data = await userModel.findOne({ userID: id })
+        const data = await userModel.findOne({ userID: id }, { updatedAt: 0, createdAt: 0 })
         return { statusCode: statusCode.ok, message: data }
     }
 
@@ -22,7 +22,7 @@ export default class User {
     }
 
     async pendingProfessor() {
-        const data = await authModel.find({ verified: 'pending' })
+        const data = await authModel.find({ verified: 'pending' }, { updatedAt: 0, createdAt: 0 })
         return { statusCode: statusCode.ok, message: data }
     }
 

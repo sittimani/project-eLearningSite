@@ -1,27 +1,22 @@
-import { Component } from "@angular/core";
-import {
-  FormGroup,
-  FormBuilder,
-  Validators,
-  FormControl
-} from "@angular/forms";
+import { Component, OnInit } from "@angular/core";
+import { FormGroup, FormBuilder, Validators, FormControl } from "@angular/forms";
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
-import { UserErrors } from "src/app/core";
-import { CourseService } from "../..";
+import { ErrorMessage, UserErrors } from "src/app/core";
+import { CourseService } from "../../shared/service/course.service";
 
 @Component({
   selector: "app-course-form",
   templateUrl: "./course-form.component.html",
   styleUrls: ["./course-form.component.css"]
 })
-
-export class CourseFormComponent {
+export class CourseFormComponent implements OnInit {
 
   public title = "Add New Course";
   public courseForm: FormGroup;
   public isFileUploaded = false;
-  private file: FormData;
+  private file!: FormData;
+  public errorMessage!: ErrorMessage;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -34,9 +29,12 @@ export class CourseFormComponent {
       overview: ["", [Validators.required, Validators.minLength(30)]],
       description: ["", [Validators.required, Validators.minLength(100)]]
     });
-    this.file = new FormData();
   }
 
+  ngOnInit() {
+    this.errorMessage = new ErrorMessage();
+    this.file = new FormData();
+  }
 
   public onFileSelected(event: Event): void {
     this.isFileUploaded = false;
@@ -49,7 +47,7 @@ export class CourseFormComponent {
     }
   }
 
-  public addnewCourse(): void {
+  public createCourse(): void {
     if (this.isFileUploaded && this.courseForm.valid) {
       let value = this.courseForm.value;
       value.courseName = value.courseName.toLowerCase();
@@ -73,4 +71,5 @@ export class CourseFormComponent {
   public getField(name: string): FormControl {
     return this.courseForm.get(name) as FormControl;
   }
+
 }

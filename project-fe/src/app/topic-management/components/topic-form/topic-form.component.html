@@ -3,15 +3,17 @@
   <mat-card>
     <mat-card-content>
       <mat-toolbar color="primary">{{title}}</mat-toolbar>
-      <form fxLayout="column" class="registration-form" [formGroup]="courseForm">
-        
+      <form fxLayout="column" class="registration-form" [formGroup]="topicForm">
+
         <mat-form-field appearance="outline">
           <mat-label>Course Name</mat-label>
           <input matInput formControlName="courseName">
         </mat-form-field>
         <span class="error-message" *ngIf="getField('courseName')?.invalid && getField('courseName')?.touched">
-          <span class="error-message" *ngIf="getField('courseName').errors?.required">Course Name is required</span>
-          <span class="error-message" *ngIf="getField('courseName').errors?.minlength">Minimum 3 letters</span>
+          <span class="error-message"
+            *ngIf="getField('courseName').errors?.required">{{errorMessage.requiredError('Course name')}}</span>
+          <span class="error-message"
+            *ngIf="getField('courseName').errors?.minlength">{{errorMessage.minLengthError('Course name', 3)}}</span>
         </span>
 
         <mat-form-field appearance="outline">
@@ -19,8 +21,9 @@
           <input matInput formControlName="topicName">
         </mat-form-field>
         <span class="error-message" *ngIf="getField('topicName')?.invalid && getField('topicName')?.touched">
-          <span class="error-message" *ngIf="getField('topicName').errors?.required">Topic Name is required</span>
-          <span class="error-message" *ngIf="getField('topicName').errors?.minlength">Minimum 5 letters</span>
+          <span class="error-message" *ngIf="getField('topicName').errors?.required">{{errorMessage.requiredError('Topic name')}}</span>
+          <span class="error-message"
+            *ngIf="getField('topicName').errors?.minlength">{{errorMessage.minLengthError('Topic name', 5)}}</span>
         </span>
 
         <mat-form-field appearance="outline">
@@ -28,8 +31,10 @@
           <input matInput formControlName="documentLink">
         </mat-form-field>
         <span class="error-message" *ngIf="getField('documentLink')?.invalid && getField('documentLink')?.touched">
-          <span class="error-message" *ngIf="getField('documentLink').errors?.required">Document link is required</span>
-          <span class="error-message" *ngIf="getField('documentLink').errors?.minlength">Minimum 10 letters</span>
+          <span class="error-message"
+            *ngIf="getField('documentLink').errors?.required">{{errorMessage.requiredError('Document Link')}}</span>
+          <span class="error-message"
+            *ngIf="getField('documentLink').errors?.minlength">{{errorMessage.minLengthError('Document Link', 10)}}</span>
         </span>
 
         <mat-form-field appearance="outline">
@@ -37,14 +42,18 @@
           <input matInput formControlName="tutorialLink">
         </mat-form-field>
         <span class="error-message" *ngIf="getField('tutorialLink')?.invalid && getField('tutorialLink')?.touched">
-          <span class="error-message" *ngIf="getField('tutorialLink').errors?.required">tutorialLink is required</span>
-          <span class="error-message" *ngIf="getField('tutorialLink').errors?.minlength">Minimum 10 letters</span>
+          <span class="error-message"
+            *ngIf="getField('tutorialLink').errors?.required">{{errorMessage.requiredError('Tutorial Link')}}</span>
+          <span class="error-message"
+            *ngIf="getField('tutorialLink').errors?.minlength">{{errorMessage.minLengthError('Toturial Name', 10)}}</span>
         </span>
 
-        <button mat-raised-button color="primary" *ngIf="isTopicAddForm" type="button" (click)="addTopic()">Add Topic</button>
-        <button mat-raised-button color="primary" *ngIf="!isTopicAddForm" type="button" (click)="updateTopic()">Update Topic</button>
+        <button mat-raised-button color="primary" *ngIf="isTopicAddForm" type="button" (click)="addTopic()">Add
+          Topic</button>
+        <button mat-raised-button color="primary" *ngIf="!isTopicAddForm" type="button" (click)="updateTopic()">Update
+          Topic</button>
         <br>
-        <button mat-raised-button type="button" color="primary" (click)="cancel()">Cancel</button>
+        <button mat-raised-button type="button" class="cancel-button" color="primary" (click)="cancel()">Cancel</button>
 
       </form>
     </mat-card-content>

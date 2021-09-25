@@ -7,7 +7,7 @@ const routes: Routes = [
   {
     path: "",
     canActivate: [AuthGuard],
-    redirectTo: "/q&a/qa-dashboard",
+    redirectTo: "/discussion/qa-dashboard",
     pathMatch: "full"
   }, {
     path: "qa-dashboard",
@@ -24,4 +24,5 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
+
 export class QuestionAndAnswerRoutingModule { }

@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
-import { UserErrors, passwordMatchValidator } from "src/app/core";
+import { UserErrors, passwordMatchValidator, ErrorMessage } from "src/app/core";
 import { AuthService, ResetPassword } from "../..";
 
 
@@ -18,6 +18,8 @@ export class PasswordComponent implements OnInit {
   public isHide = true;
   public title = "Password Reset Form";
   private id!: string;
+  public userErrors = UserErrors;
+  public errorMessage: ErrorMessage;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -28,8 +30,9 @@ export class PasswordComponent implements OnInit {
     this.passwordForm = this.formBuilder.group({
       oldPassword: ["", [Validators.required, Validators.minLength(8)]],
       password: ["", [Validators.required, Validators.minLength(8)]],
-      confirmPassword: ["", [Validators.required, Validators.minLength(8)]]
+      confirmPassword: ["", [Validators.required]]
     }, { validator: passwordMatchValidator("password", "confirmPassword") });
+    this.errorMessage = new ErrorMessage();
   }
 
   ngOnInit(): void {

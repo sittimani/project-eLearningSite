@@ -18,16 +18,12 @@ export class TopicService {
     this.shareTopic$ = this.shareTopic.asObservable();
   }
   
-  public getCourse(name: string): Observable<Topic[]> {
-    return this.http.get<Topic[]>(this.serverAddess + "course-topic/ " + name);
+  public getCourse(name: string): Observable<Topic> {
+    return this.http.get<Topic>(this.serverAddess + "course-topic/ " + name);
   }
 
   public updateCourse(value: TopicDetail): Observable<string> {
     return this.http.put<string>(this.serverAddess + "update-topic", value);
-  }
-
-  public getTopics(courseName: string): Observable<Topic> {
-    return this.http.post<Topic>(this.serverAddess + "topics", { courseName: courseName });
   }
 
   public deleteTopic(courseName: string, topicName: string): Observable<string> {

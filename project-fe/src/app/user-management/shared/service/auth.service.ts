@@ -7,7 +7,8 @@ import {
   LoginResponse,
   UserInformation,
   ResetPassword,
-  UserDetails
+  UserDetails,
+  Roles
 } from "../..";
 
 @Injectable({
@@ -19,10 +20,15 @@ export class AuthService {
   private serverAddress = environment.serverAddress
   private userLoggedIn: BehaviorSubject<boolean>;
   public userLoggedIn$: Observable<boolean>
+  public role: Roles = {
+    readDocument: false,
+    createDocument: false,
+    updateDocument: false
+  };
 
   constructor(private http: HttpClient) {
-    this.userLoggedIn = new BehaviorSubject(Boolean(false))
-    this.userLoggedIn$ = this.userLoggedIn.asObservable()
+    this.userLoggedIn = new BehaviorSubject(Boolean(false));
+    this.userLoggedIn$ = this.userLoggedIn.asObservable();
   }
 
   public loggedIn(): void {
@@ -42,14 +48,14 @@ export class AuthService {
   }
 
   public updatePassword(value: ResetPassword): Observable<string> {
-    return this.http.post<string>(this.serverAddress + "update-password", value);
+    return this.http.put<string>(this.serverAddress + "update-password", value);
   }
 
   public forgotPassword(value: LoginCreditionals): Observable<string> {
-    return this.http.post<string>(this.serverAddress + "forgot-password", value);
+    return this.http.put<string>(this.serverAddress + "forgot-password", value);
   }
 
-  public setToken(responseData: LoginResponse) {
+  public saveToken(responseData: LoginResponse) {
     localStorage.setItem("token", responseData.accessToken);
     localStorage.setItem("user", JSON.stringify(responseData.user.users));
     localStorage.setItem("menu", JSON.stringify(responseData.user.users.role.menu));

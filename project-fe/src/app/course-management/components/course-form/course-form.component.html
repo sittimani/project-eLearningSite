@@ -11,8 +11,8 @@
           <input matInput formControlName="courseName">
         </mat-form-field>
         <span class="error-message" *ngIf="getField('courseName')?.invalid && getField('courseName')?.touched">
-          <span class="error-message" *ngIf="getField('courseName').errors?.required">Coursename is required</span>
-          <span class="error-message" *ngIf="getField('courseName').errors?.minlength">Minimum 3 letter required</span>
+          <span class="error-message" *ngIf="getField('courseName').errors?.required">{{errorMessage.requiredError('Course name')}}</span>
+          <span class="error-message" *ngIf="getField('courseName').errors?.minlength">{{errorMessage.minLengthError('Course name', 3)}}</span>
         </span>
 
         <mat-form-field appearance="outline">
@@ -20,9 +20,8 @@
           <input matInput formControlName="overview">
         </mat-form-field>
         <span class="error-message" *ngIf="getField('overview')?.invalid && getField('overview')?.touched">
-          <span class="error-message" *ngIf="getField('overview').errors?.required">Overview is required</span>
-          <span class="error-message" *ngIf="getField('overview').errors?.minlength">overview should be minimum 30
-            characters</span>
+          <span class="error-message" *ngIf="getField('overview').errors?.required">{{errorMessage.requiredError('Overview')}}</span>
+          <span class="error-message" *ngIf="getField('overview').errors?.minlength">{{errorMessage.minLengthError('Over view', 30)}}</span>
         </span>
 
         <mat-form-field appearance="outline">
@@ -31,16 +30,15 @@
             formControlName="description"></textarea>
         </mat-form-field>
         <span class="error-message" *ngIf="getField('description')?.invalid && getField('description')?.touched">
-          <span class="error-message" *ngIf="getField('description').errors?.required">Description is required</span>
-          <span class="error-message" *ngIf="getField('description').errors?.minlength">Description must be minimum 200
-            characters</span>
+          <span class="error-message" *ngIf="getField('description').errors?.required">{{errorMessage.requiredError('Description')}}</span>
+          <span class="error-message" *ngIf="getField('description').errors?.minlength">{{errorMessage.minLengthError('Description', 100)}}</span>
         </span>
 
         <button type="button" class="fileInput"  mat-raised-button (click)="fileInput.click()">Choose
           File</button>
         <input hidden (change)="onFileSelected($event)" #fileInput type="file">
         <span class="error-message" *ngIf="!isFileUploaded">Please select png, jpg or jpeg file alone.</span>
-        <button mat-raised-button type="button" color="primary" (click)="addnewCourse()">Add Course</button>
+        <button mat-raised-button type="button" color="primary" (click)="createCourse()">Add Course</button>
         <br>
         <button mat-raised-button type="button" color="primary" (click)="cancel()">Cancel</button>
       </form>

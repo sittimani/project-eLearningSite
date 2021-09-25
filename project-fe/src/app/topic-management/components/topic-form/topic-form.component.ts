@@ -1,8 +1,13 @@
 import { Component, OnInit } from "@angular/core";
-import { FormGroup, FormBuilder, Validators, FormControl } from "@angular/forms";
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  FormControl
+} from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
-import { UserErrors } from "src/app/core";
+import { ErrorMessage, UserErrors } from "src/app/core";
 import { AuthService, UserDetails } from "src/app/user-management";
 import { Topic, TopicDetail, TopicService } from "../..";
 
@@ -18,7 +23,8 @@ export class TopicFormComponent implements OnInit {
   public url!: string;
   private courseName!: string;
   private teacherID!: string;
-  public courseForm: FormGroup;
+  public topicForm: FormGroup;
+  public errorMessage: ErrorMessage;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -28,23 +34,24 @@ export class TopicFormComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private toastr: ToastrService
   ) {
-    this.courseForm = this.formBuilder.group({
+    this.topicForm = this.formBuilder.group({
       courseName: ["", [Validators.required, Validators.minLength(3)]],
       topicName: ["", [Validators.required, Validators.minLength(5)]],
-      documentLink: ["", [Validators.required, Validators.minLength(5)]],
-      tutorialLink: ["", [Validators.required, Validators.minLength(5)]]
+      documentLink: ["", [Validators.required, Validators.minLength(10)]],
+      tutorialLink: ["", [Validators.required, Validators.minLength(10)]]
     });
+    this.errorMessage = new ErrorMessage();
   }
 
   ngOnInit(): void {
     this.url = this.router.url;
     this.courseName = this.activatedRoute.snapshot.params["name"];
-    this.courseForm.patchValue({ courseName: this.courseName });
-    this.courseForm.controls["courseName"].disable();
-    this.checkPrivilages();
+    this.topicForm.patchValue({ courseName: this.courseName });
+    this.topicForm.controls["courseName"].disable();
+    this.checkPage();
   }
 
-  private checkPrivilages(): void {
+  private checkPage(): void {
     const details: UserDetails = this.auth.getUserDetails();
     if (details) {
       this.teacherID = details._id;
@@ -61,8 +68,8 @@ export class TopicFormComponent implements OnInit {
   }
 
   public addTopic(): void {
-    if (this.courseForm.valid) {
-      let value = this.courseForm.value;
+    if (this.topicForm.valid) {
+      let value = this.topicForm.value;
       value.teacherID = this.teacherID;
       value.courseName = this.courseName;
       this.topic.updateCourse(value).subscribe((response: string) => {
@@ -81,20 +88,20 @@ export class TopicFormComponent implements OnInit {
     })
     if (topicName === "no")
       this.router.navigate(["home"]);
-    this.topic.getTopics(this.courseName).subscribe((response: Topic) => {
-      const topicData: TopicDetail = response[topicName];
-      this.courseForm.get("topicName")?.setValue(topicName);
-      this.courseForm.patchValue(topicData);
-      this.courseForm.get("topicName")?.disable();
+    this.topic.getCourse(this.courseName).subscribe((response: Topic) => {
+      const topicData: TopicDetail = response[0][topicName];
+      this.topicForm.get("topicName")?.setValue(topicName);
+      this.topicForm.patchValue(topicData);
+      this.topicForm.get("topicName")?.disable();
     })
   }
 
   public updateTopic(): void {
-    if (this.courseForm.valid) {
-      let value = this.courseForm.value;
+    if (this.topicForm.valid) {
+      let value = this.topicForm.value;
       value.teacherID = this.teacherID;
       value.courseName = this.courseName;
-      value.topicName = this.courseForm.get("topicName")?.value;
+      value.topicName = this.topicForm.get("topicName")?.value;
       this.topic.updateCourse(value).subscribe((response: string) => {
         this.toastr.success(response, "Success");
         this.router.navigate(["topic/" + this.courseName]);
@@ -109,7 +116,7 @@ export class TopicFormComponent implements OnInit {
   }
 
   public getField(name: string): FormControl {
-    return this.courseForm.get(name) as FormControl;
+    return this.topicForm.get(name) as FormControl;
   }
 
 }

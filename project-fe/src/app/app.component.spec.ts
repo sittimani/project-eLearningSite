@@ -5,6 +5,7 @@ import { RouterTestingModule } from "@angular/router/testing";
 import { ToastrModule } from "ngx-toastr";
 import { AppComponent } from "./app.component";
 import { MaterialModule } from "./material/material.module";
+import { SharedModule } from "./shared/shared.module";
 
 describe("AppComponent", () => {
   beforeEach(async () => {
@@ -14,6 +15,7 @@ describe("AppComponent", () => {
         BrowserAnimationsModule,
         HttpClientModule,
         MaterialModule,
+        SharedModule,
         ToastrModule.forRoot()
       ],
       declarations: [
@@ -26,11 +28,5 @@ describe("AppComponent", () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app).toBeTruthy();
-  });
-
-  it("should have as title 'iLearn'", () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual("iLearn");
   });
 });

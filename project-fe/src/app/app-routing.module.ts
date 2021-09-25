@@ -1,6 +1,7 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { AuthGuard } from "./core";
+import { CourseResolverService } from "./core/resolver/course-resolver.service";
 import { CourseListComponent } from "./course-management";
 import { InternalServerErrorComponent, PageNotFoundComponent } from "./shared";
 
@@ -11,6 +12,9 @@ const routes: Routes = [
   }, {
     path: "home",
     canActivate: [AuthGuard],
+    resolve: {
+      data: CourseResolverService
+    },
     component: CourseListComponent
   }, {
     path: "topic",
@@ -19,7 +23,7 @@ const routes: Routes = [
     path: "admin",
     loadChildren: () => import("./course-management/course-management.module").then(m => m.CourseManagementModule)
   }, {
-    path: "q&a",
+    path: "discussion",
     loadChildren: () => import("./question-and-answer/question-and-answer.module").then(m => m.QuestionAndAnswerModule)
   }, {
     path: "internal-server-error",

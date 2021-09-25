@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators, FormControl } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
-import { UserErrors, passwordMatchValidator } from "src/app/core";
+import { UserErrors, passwordMatchValidator, ErrorMessage } from "src/app/core";
 import { AuthService, UserInformation, UserProfileService } from "../..";
 
 @Component({
@@ -20,6 +20,8 @@ export class RegisterComponent implements OnInit {
   public isProfessorUpdate = false;
   public registrationForm!: FormGroup;
   private id!: string;
+  public userErrors = UserErrors;
+  public errorMessage: ErrorMessage;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -39,6 +41,7 @@ export class RegisterComponent implements OnInit {
       confirmPassword: ["", [Validators.required]],
       workingAt: ["", [Validators.required]]
     }, { validator: passwordMatchValidator("password", "confirmPassword") });
+    this.errorMessage = new ErrorMessage();
   }
 
   ngOnInit(): void {
@@ -103,16 +106,16 @@ export class RegisterComponent implements OnInit {
 
   private loadUserData(): void {
     this.userProfile.getUserData(this.id).subscribe((response: UserInformation) => {
-      if (!response) {
+      if (response) {
+        this.registrationForm.patchValue(response);
+      } else {
         this.toastr.error("Invalid User", "Error");
         this.router.navigate(["home"]);
-      } else {
-        this.registrationForm.patchValue(response);
       }
     })
   }
 
-  private disableFieldForUpdate(): void {
+  public disableFieldForUpdate(): void {
     this.getField("password")?.disable();
     this.getField("confirmPassword")?.disable();
     this.getField("email")?.disable();

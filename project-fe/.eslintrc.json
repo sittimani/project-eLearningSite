@@ -19,6 +19,7 @@
         "eqeqeq": "error",
         "no-var": "error",
         "no-alert": "error",
+        "no-console": "error",
         "quotes": [
           2,
           "double",

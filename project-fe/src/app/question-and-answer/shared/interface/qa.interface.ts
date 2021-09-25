@@ -6,9 +6,7 @@ export interface QAModel {
     professorName: string,
     question: string,
     answer: string,
-    isAnswered: boolean,
-    createdAt: string,
-    updatedAt: string
+    isAnswered: boolean
 }
 
 export interface Answer {

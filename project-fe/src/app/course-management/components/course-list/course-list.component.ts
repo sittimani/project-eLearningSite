@@ -1,11 +1,10 @@
 import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Data, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { Topic } from "src/app/topic-management";
-import { AuthService, Roles } from "src/app/user-management";
+import { AuthService, Roles, UserDetails } from "src/app/user-management";
 import { environment } from "src/environments/environment";
 import { CourseList, CourseService } from "../..";
-import { UserDetails } from "src/app/user-management";
 import { DialogService } from "src/app/shared";
 
 @Component({
@@ -13,6 +12,7 @@ import { DialogService } from "src/app/shared";
   templateUrl: "./course-list.component.html",
   styleUrls: ["./course-list.component.css"]
 })
+
 export class CourseListComponent implements OnInit {
 
   public roles: Roles = {
@@ -28,27 +28,34 @@ export class CourseListComponent implements OnInit {
     private router: Router,
     private courseService: CourseService,
     private dialog: DialogService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private activatedRoute: ActivatedRoute
   ) { }
+
 
   ngOnInit() {
     const UserDetails: UserDetails = this.auth.getUserDetails();
     if (UserDetails)
       this.roles = UserDetails.role;
-    this.getCourses();
+    this.activatedRoute.data.subscribe((response: Data) => {
+      this.formatCourse(response.data);
+    })
   }
 
-  public getCourses(): void {
+  public formatCourse(responseData: Topic[]): void {
     this.allCourse = [];
-    this.courseService.getAllCourse().subscribe((response: Topic[]) => {
-      let responseData = response;
-      const count: number = responseData.length;
-      this.isNoCourse = true;
-      if (count !== 0) {
-        this.allCourse = responseData.map(this.formatDocument)
-        this.isNoCourse = false;
-      }
-    })
+    this.isNoCourse = true;
+    if (this.isNotUndefined(responseData)) {
+      this.allCourse = responseData.map(this.formatDocument)
+      this.isNoCourse = false;
+    }
+  }
+
+  private isNotUndefined(responseData: Topic[]): boolean {
+    if (responseData !== undefined)
+      if (responseData.length)
+        return true;
+    return false
   }
 
   private formatDocument(document: Topic): CourseList {
@@ -66,7 +73,9 @@ export class CourseListComponent implements OnInit {
       if (choice) {
         this.courseService.deleteCourse(name).subscribe((responseData: string) => {
           this.toastr.success(responseData, "Success");
-          this.getCourses();
+          this.router.navigateByUrl("blank").then(() => {
+            this.router.navigateByUrl("home")
+          })
         })
       }
     })

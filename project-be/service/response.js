@@ -5,4 +5,14 @@ export function sendResponse(response, data) {
     response.status(data.statusCode).json(data.message)
 }
 
-export const dbError = { statusCode: statusCode.unauthorized, message: statusText.dbError }
+const dbError = { statusCode: statusCode.serverIssue, message: statusText.dbError }
+
+export const use = errorCatcher => (request, response) => {
+    Promise.resolve(errorCatcher(request, response))
+        .catch(
+            (error) => {
+                console.log(error)
+                sendResponse(response, dbError)
+            }
+        )
+}

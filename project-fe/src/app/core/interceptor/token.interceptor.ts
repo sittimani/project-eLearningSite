@@ -26,12 +26,12 @@ export class TokenInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<any>> {
 
     this.loader.isLoading.next(true);
-    let modifiedReq = request.clone({
+    const modifiedRequest = request.clone({
       setHeaders: {
         Authorization: `Bearer ${this.auth.getToken()}`
       }
     });
-    return next.handle(modifiedReq).pipe(
+    return next.handle(modifiedRequest).pipe(
       catchError((error: HttpErrorResponse) => {
         this.loader.isLoading.next(true);
         this.toastErrorMessage(error);
@@ -46,7 +46,7 @@ export class TokenInterceptor implements HttpInterceptor {
   }
 
   private toastErrorMessage(error: HttpErrorResponse): void {
-    if (error.status === 0) {
+    if (error.status === 0 || error.status === 500) {
       this.router.navigate(["internal-server-error"]);
     } else if (error.status === 401 && error.error === "Invalid token") {
       this.auth.logOut();

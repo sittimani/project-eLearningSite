@@ -2,9 +2,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { RouterTestingModule } from "@angular/router/testing";
 import { ToastrModule } from "ngx-toastr";
-import { Observable } from "rxjs";
 import { MaterialModule } from "src/app/material/material.module";
-import { Topic } from "src/app/topic-management";
 import { AuthService } from "src/app/user-management";
 
 import { CourseListComponent } from "./course-list.component";
@@ -56,9 +54,7 @@ describe("CourseListComponent", () => {
           shortDescription: "Django is a web application framework.",
           url: "1631518952076.png",
           description: "Django is a high-level Python web framework that enables rapid development of secure and maintainable websites.\nBuilt by experienced developers, Django takes care of much of the hassle of web development, \nso you can focus on writing your app without needing to reinvent the wheel. It is free and open source, \nhas a thriving and active community, great documentation, and many options for free and paid-for support. "
-        },
-        createdAt: "",
-        updatedAt: ""
+        }
       }
     ];
     // let service = fixture.debugElement.injector.get(CourseService)
@@ -75,7 +71,9 @@ describe("CourseListComponent", () => {
       url: "http://localhost:8080/uploads/" + "1631518952076.png"
     }
     component.formatCourse(data)
-     fixture.detectChanges()
+    fixture.detectChanges()
+    // eslint-disable-next-line no-console
+    console.log(component.allCourse[0])
     expect(component.allCourse[0]).toEqual(someData)
   })
 });

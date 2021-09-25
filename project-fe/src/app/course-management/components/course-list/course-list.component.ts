@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute, Data, Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { Topic } from "src/app/topic-management";
 import { AuthService, Roles, UserDetails } from "src/app/user-management";
@@ -28,8 +28,7 @@ export class CourseListComponent implements OnInit {
     private router: Router,
     private courseService: CourseService,
     private dialog: DialogService,
-    private toastr: ToastrService,
-    private activatedRoute: ActivatedRoute
+    private toastr: ToastrService
   ) { }
 
 
@@ -37,8 +36,12 @@ export class CourseListComponent implements OnInit {
     const UserDetails: UserDetails = this.auth.getUserDetails();
     if (UserDetails)
       this.roles = UserDetails.role;
-    this.activatedRoute.data.subscribe((response: Data) => {
-      this.formatCourse(response.data);
+    this.getAllCourse();
+  }
+
+  private getAllCourse() {
+    this.courseService.getAllCourse().subscribe((response: Topic[]) => {
+      this.formatCourse(response);
     })
   }
 
@@ -73,9 +76,7 @@ export class CourseListComponent implements OnInit {
       if (choice) {
         this.courseService.deleteCourse(name).subscribe((responseData: string) => {
           this.toastr.success(responseData, "Success");
-          this.router.navigateByUrl("blank").then(() => {
-            this.router.navigateByUrl("home")
-          })
+          this.getAllCourse();
         })
       }
     })

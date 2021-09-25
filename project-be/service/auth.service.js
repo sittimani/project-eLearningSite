@@ -6,15 +6,15 @@ import authModel from '../models/auth-model.js'
 const verficationService = new Verification()
 
 export default class AuthService {
-
     async login(dataReceived) {
         const { email, password } = dataReceived
         const authService = new AuthService()
         const data = await authModel.findOne({ email: email })
         if (data) {
-            if (data.password !== password)
-                return { statusCode: statusCode.unauthorized, message: statusText.misMatch }
-            return await authService.loginUser(data)
+            const response = data.password !== password ?
+                { statusCode: statusCode.unauthorized, message: statusText.misMatch } :
+                await authService.loginUser(data)
+            return response
         }
         return { statusCode: statusCode.notFound, message: statusText.noUserFound }
     }
@@ -32,16 +32,16 @@ export default class AuthService {
     async professorLogin(data) {
         const authService = new AuthService()
         if (data.verified === 'approved') {
-            const res = await authService.getMyToken(data)
-            return authService.checkHasToken(res)
+            const response = await authService.getMyToken(data)
+            return authService.checkHasToken(response)
         } else if (data.verified === 'denied')
             return { statusCode: statusCode.unauthorized, message: statusText.denied }
         return { statusCode: statusCode.unauthorized, message: statusText.pending }
     }
 
-    checkHasToken(res) {
-        if (res)
-            return { statusCode: statusCode.ok, message: res.message }
+    checkHasToken(response) {
+        if (response)
+            return { statusCode: statusCode.ok, message: response.message }
         return { statusCode: statusCode.serverIssue, message: statusText.serverIssue }
     }
 
@@ -55,17 +55,22 @@ export default class AuthService {
 
 
     async updateUserPassword(dataReceived) {
-        const { id, oldPassword, newPassword } = dataReceived
+        const authService = new AuthService()
+        const { id } = dataReceived
         const data = await authModel.findOne({ _id: id })
-        if (data) {
-            if (data.password !== oldPassword)
-                return { statusCode: statusCode.unauthorized, message: statusText.misMatch }
-            else if (oldPassword === newPassword)
-                return { statusCode: statusCode.badRequest, message: statusText.samePassword }
-            await authModel.updateOne({ _id: id }, { $set: { password: newPassword } })
-            return { statusCode: statusCode.ok, message: statusText.passwordChanged }
-        }
+        if (data)
+            return authService.validatePassword(data, dataReceived)
         return { statusCode: statusCode.notFound, message: statusText.notFound }
+    }
+
+    async validatePassword(data, dataReceived) {
+        const { id, oldPassword, newPassword } = dataReceived
+        if (data.password !== oldPassword)
+            return { statusCode: statusCode.unauthorized, message: statusText.misMatch }
+        else if (oldPassword === newPassword)
+            return { statusCode: statusCode.badRequest, message: statusText.samePassword }
+        await authModel.updateOne({ _id: id }, { $set: { password: newPassword } })
+        return { statusCode: statusCode.ok, message: statusText.passwordChanged }
     }
 
     async userForgotPassword(dataReceived) {

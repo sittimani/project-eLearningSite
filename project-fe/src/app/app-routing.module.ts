@@ -1,7 +1,6 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { AuthGuard } from "./core";
-import { CourseResolverService } from "./core/resolver/course-resolver.service";
 import { CourseListComponent } from "./course-management";
 import { InternalServerErrorComponent, PageNotFoundComponent } from "./shared";
 
@@ -12,9 +11,6 @@ const routes: Routes = [
   }, {
     path: "home",
     canActivate: [AuthGuard],
-    resolve: {
-      data: CourseResolverService
-    },
     component: CourseListComponent
   }, {
     path: "topic",

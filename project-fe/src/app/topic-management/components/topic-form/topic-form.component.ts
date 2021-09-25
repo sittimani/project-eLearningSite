@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import {
   FormGroup,
   FormBuilder,
@@ -7,6 +7,7 @@ import {
 } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
+import { Observable, Subscription } from "rxjs";
 import { ErrorMessage, UserErrors } from "src/app/core";
 import { AuthService, UserDetails } from "src/app/user-management";
 import { Topic, TopicDetail, TopicService } from "../..";
@@ -16,6 +17,7 @@ import { Topic, TopicDetail, TopicService } from "../..";
   templateUrl: "./topic-form.component.html",
   styleUrls: ["./topic-form.component.css"]
 })
+
 export class TopicFormComponent implements OnInit {
 
   public isTopicAddForm = true;
@@ -118,5 +120,4 @@ export class TopicFormComponent implements OnInit {
   public getField(name: string): FormControl {
     return this.topicForm.get(name) as FormControl;
   }
-
 }

@@ -13,7 +13,7 @@ import { UserDetails } from "src/app/user-management";
 })
 export class QaDashboardComponent implements OnInit {
 
-  public dataToDisplay: QAModel[] = []
+  public dataToDisplay: QAModel[] = [];
   public isStudent = true;
   private userID!: string;
   private userName!: string;
@@ -31,19 +31,18 @@ export class QaDashboardComponent implements OnInit {
     if (userDetails) {
       this.userID = userDetails._id;
       this.userName = userDetails.name;
-      this.loadPage(userDetails)
+      this.loadPage(userDetails);
     }
   }
   private loadPage(userDetails: UserDetails): void {
     if (this.router.url.includes("my-answers")) {
       this.isAnswerEditPage = true;
       this.getDataForEdit();
-    } else {
-      this.checkPrivilages(userDetails.role)
-    }
+    } else
+      this.checkUser(userDetails.role);
   }
 
-  private checkPrivilages(role: Roles): void {
+  private checkUser(role: Roles): void {
     if (role.readDocument && !role.createCourse && !role.updateDocument) {
       this.isStudent = true;
       this.getDataForStudent();
@@ -55,22 +54,29 @@ export class QaDashboardComponent implements OnInit {
 
   private getDataForStudent(): void {
     this.qaService.getMyquestions(this.userID).subscribe((response: QAModel[]) => {
-      let data = response;
-      data.forEach((element: QAModel, index: number) => {
-        if (!element.isAnswered) {
-          data[index].answer = "Yet to be answered";
-          data[index].professorName = "Nil";
-        }
-      });
-      this.dataToDisplay = data;
+      if (response.length !== 0)
+        this.dataToDisplay = response.map(this.fillAnswer);
+      else
+        this.toastr.error(UserErrors.NoDataFound, "Error");
     })
   }
+
+  private fillAnswer(element: QAModel) {
+    if (!element.isAnswered) {
+      element.answer = "Yet to be answered";
+      element.professorName = "Nil";
+    }
+    return element;
+  }
+
 
   private getDataForProfessor(): void {
     this.dataToDisplay = []
     this.qaService.getAllQuestions().subscribe((response: QAModel[]) => {
-      const responseData = response;
-      this.dataToDisplay = responseData;
+      if (response.length !== 0)
+        this.dataToDisplay = response;
+      else
+        this.toastr.error(UserErrors.NoDataFound, "Error");
     });
   }
 
@@ -79,7 +85,7 @@ export class QaDashboardComponent implements OnInit {
     this.qaService.getDataForEdit(this.userID).subscribe((response: QAModel[]) => {
       const data = response;
       const count: number = data.length;
-      count !== 0 ? this.dataToDisplay = data : this.toastr.error("No Data Found!!!", "error") ;
+      count !== 0 ? this.dataToDisplay = data : this.toastr.error(UserErrors.NoDataFound, "error");
     })
   }
 
@@ -87,15 +93,15 @@ export class QaDashboardComponent implements OnInit {
     this.qaService.isQuestionForm = false;
     this.qaService.openInputDialog().afterClosed().subscribe((isClosed: boolean) => {
       if (isClosed) {
-        const ans = this.qaService.answer;
-        const val: Answer = {
+        const answer = this.qaService.answer;
+        const value: Answer = {
           questionID: id,
           professorID: this.userID,
           professorName: this.userName,
-          answer: ans,
+          answer: answer,
           isAnswered: true
         };
-        ans !== "" ? this.submitAnswer(val) : this.toastr.error(UserErrors.InvalidForm, "Error");
+        answer !== "" ? this.submitAnswer(value) : this.toastr.error(UserErrors.InvalidForm, "Error");
       }
     })
   }
@@ -108,6 +114,6 @@ export class QaDashboardComponent implements OnInit {
   }
 
   public triggerEditMyAnswerPage(): void {
-    this.router.navigate(["q&a/my-answers"])
+    this.router.navigate(["discussion/my-answers"]);
   }
 }

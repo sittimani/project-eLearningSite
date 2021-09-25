@@ -1,5 +1,5 @@
 <mat-sidenav class="sideBarNav" [(opened)]="isOpen">
-    <button (click)="isOpen = !isOpen" class="close-button">
+    <button (click)="closeSideNav()" class="close-button">
         <mat-icon>close</mat-icon>
     </button>
     <ng-container [ngTemplateOutlet]="navigationItems"></ng-container>
@@ -8,7 +8,7 @@
 
 <mat-toolbar color="primary" class="navbar">
     <div>
-        <button id="menuButton" (click)="isOpen = !isOpen">
+        <button id="menuButton" (click)="closeSideNav()">
             <mat-icon>menu</mat-icon>
         </button>
         <span>{{title}}</span>

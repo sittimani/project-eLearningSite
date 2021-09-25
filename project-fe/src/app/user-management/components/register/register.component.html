@@ -5,15 +5,17 @@
       <mat-toolbar color="primary">{{title}}</mat-toolbar>
 
       <form fxLayout="column" class="registration-form" [formGroup]="registrationForm" #top>
-        
+
         <mat-form-field appearance="outline">
           <mat-label>Name</mat-label>
           <input matInput formControlName="name">
         </mat-form-field>
         <span class="error-message" *ngIf="getField('name')?.invalid && getField('name')?.touched">
-          <span class="error-message" *ngIf="getField('name').errors?.required">Name is required</span>
-          <span class="error-message" *ngIf="getField('name').errors?.minlength">Minimum 3 letter required</span>
-          <span class="error-message" *ngIf="getField('name').errors?.pattern">Name must not have numbers</span>
+          <span class="error-message"
+            *ngIf="getField('name').errors?.required">{{errorMessage.requiredError('Name')}}</span>
+          <span class="error-message" *ngIf="getField('name').errors?.minlength">{{errorMessage.minLengthError('Name',
+            3)}}</span>
+          <span class="error-message" *ngIf="getField('name').errors?.pattern">{{userErrors.InvalidName}}</span>
         </span>
 
 
@@ -22,9 +24,10 @@
           <input matInput formControlName="age">
         </mat-form-field>
         <span class="error-message" *ngIf="getField('age')?.invalid && getField('age')?.touched">
-          <span class="error-message" *ngIf="getField('age').errors?.required">Age is required</span>
-          <span class="error-message" *ngIf="getField('age').errors?.min">Age must be above 15 years</span>
-          <span class="error-message" *ngIf="getField('age').errors?.max">Age must be below 60 years</span>
+          <span class="error-message"
+            *ngIf="getField('age').errors?.required">{{errorMessage.requiredError('Age')}}</span>
+          <span class="error-message" *ngIf="getField('age').errors?.min">{{userErrors.MinAge}}</span>
+          <span class="error-message" *ngIf="getField('age').errors?.max">{{userErrors.MaxAge}}</span>
         </span>
 
         <mat-radio-group formControlName="gender">
@@ -32,7 +35,8 @@
           <mat-radio-button value="female">Female</mat-radio-button>
         </mat-radio-group>
         <span class="error-message" *ngIf="getField('gender')?.invalid && getField('gender')?.touched">
-          <span class="error-message" *ngIf="getField('gender').errors?.required">Age is required</span>
+          <span class="error-message"
+            *ngIf="getField('gender').errors?.required">{{errorMessage.requiredError('gender')}}</span>
         </span>
 
         <mat-form-field appearance="outline">
@@ -40,7 +44,7 @@
           <input matInput formControlName="phone">
         </mat-form-field>
         <span class="error-message" *ngIf="getField('phone')?.invalid && getField('phone')?.touched">
-          <span class="error-message" *ngIf="getField('phone').errors?.pattern">Invalid Phone Number</span>
+          <span class="error-message" *ngIf="getField('phone').errors?.pattern">{{userErrors.InvalidPhone}}</span>
         </span>
 
 
@@ -49,8 +53,9 @@
           <input matInput formControlName="email">
         </mat-form-field>
         <span class="error-message" *ngIf="getField('email')?.invalid && getField('email')?.touched">
-          <span class="error-message" *ngIf="getField('email').errors?.required">Email is required</span>
-          <span class="error-message" *ngIf="getField('email').errors?.email">Invalid Email Addess</span>
+          <span class="error-message"
+            *ngIf="getField('email').errors?.required">{{errorMessage.requiredError('email')}}</span>
+          <span class="error-message" *ngIf="getField('email').errors?.email">{{userErrors.InvalidEmail}}</span>
         </span>
 
 
@@ -59,7 +64,8 @@
           <input matInput formControlName="workingAt">
         </mat-form-field>
         <span class="error-message" *ngIf="getField('work')?.invalid && getField('work')?.touched">
-          <span class="error-message" *ngIf="getField('work').errors?.required">Working position is required</span>
+          <span class="error-message" *ngIf="getField('work').errors?.required">{{errorMessage.requiredError('Work
+            Position')}}</span>
         </span>
 
 
@@ -71,8 +77,10 @@
           </button>
         </mat-form-field>
         <span class="error-message" *ngIf="getField('password')?.invalid && getField('password')?.touched">
-          <span class="error-message" *ngIf="getField('password').errors?.required">password is required</span>
-          <span class="error-message" *ngIf="getField('password').errors?.minlength">Password should be 8 charcters
+          <span class="error-message"
+            *ngIf="getField('password').errors?.required">{{errorMessage.requiredError('Password')}}</span>
+          <span class="error-message"
+            *ngIf="getField('password').errors?.minlength">{{errorMessage.minLengthError('Password', 8)}}
             minimum</span>
         </span>
 
@@ -81,24 +89,29 @@
           <input type="password" matInput formControlName="confirmPassword">
         </mat-form-field>
         <span class="error-message" *ngIf="getField('confirmPassword')?.invalid && getField('password')?.touched">
-          <span class="error-message" *ngIf="getField('confirmPassword').errors?.required">confirmPassword is
-            required</span>
-          <span class="error-message" *ngIf="getField('confirmPassword').errors?.passwordMismatch">Password and confirm
-            password not
-            match</span>
+          <span class="error-message"
+            *ngIf="getField('confirmPassword').errors?.required">{{errorMessage.requiredError('Confirm
+            Password')}}</span>
+          <span class="error-message"
+            *ngIf="getField('confirmPassword').errors?.passwordMismatch">{{userErrors.Mismatch}}</span>
         </span>
 
-        <button mat-raised-button color="primary" *ngIf="!isUpdateForm && isAddUser" type="button" (click)="addUser()">Register as
+        <button mat-raised-button color="primary" *ngIf="!isUpdateForm && isAddUser" type="button"
+          (click)="addUser()">Register as
           Student</button>
-        <button mat-raised-button color="primary" *ngIf="!isUpdateForm && !isAddUser" type="button" (click)="addUser()">Register
+        <button mat-raised-button color="primary" *ngIf="!isUpdateForm && !isAddUser" type="button"
+          (click)="addUser()">Register
           as
           Professor</button>
         <br>
-        <button mat-raised-button color="primary" *ngIf="!isUpdateForm && isAddUser" (click)="triggerProfessorRegister()">Go to
+        <button mat-raised-button color="primary" *ngIf="!isUpdateForm && isAddUser"
+          (click)="triggerProfessorRegister()">Go to
           professor Register</button>
-        <button mat-raised-button color="primary" *ngIf="!isUpdateForm && !isAddUser" (click)="triggerStudentRegister()">Go to Student
+        <button mat-raised-button color="primary" *ngIf="!isUpdateForm && !isAddUser"
+          (click)="triggerStudentRegister()">Go to Student
           Register</button>
-        <button mat-raised-button color="primary" *ngIf="isUpdateForm" type="button" (click)="updateUser()">Update User</button>
+        <button mat-raised-button color="primary" *ngIf="isUpdateForm" type="button" (click)="updateUser()">Update
+          User</button>
         <br>
         <button mat-raised-button color="primary" *ngIf="isUpdateForm" type="button" (click)="cancel()">Cancel</button>
       </form>

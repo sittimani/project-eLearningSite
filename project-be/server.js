@@ -30,8 +30,8 @@ app.use(qaRoute)
 app.listen(port, async () => {
     console.log('Server running in port ' + port)
     connectToDB().then(resolve => {
-        console.log('Connected to mongo')
+        console.log('connected to mongoDB')
     }, reject => {
-        console.log('Not connected')
+        console.log('Error in connecting to mongoDB')
     })
 })

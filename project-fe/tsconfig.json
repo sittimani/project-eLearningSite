@@ -8,6 +8,7 @@
     "strict": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
+    "emitDecoratorMetadata": false,
     "sourceMap": true,
     "declaration": false,
     "downlevelIteration": true,

@@ -19,9 +19,8 @@ export function passwordMatchValidator(password: string, confirmPassword: string
     if (passwordControl.value !== confirmPasswordControl.value) {
       confirmPasswordControl.setErrors({ passwordMismatch: true });
       return true;
-    } else {
-      confirmPasswordControl.setErrors(null);
-      return null;
     }
+    confirmPasswordControl.setErrors(null);
+    return null;
   };
 }

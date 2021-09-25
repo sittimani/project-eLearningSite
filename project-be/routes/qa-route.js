@@ -1,20 +1,22 @@
 import { Router } from 'express'
-import { verifyToken, isProfessor, isAdmin } from '../middleware/verifyToken.js'
-import {
-    uploadQuestion,
-    getMyQuestions,
-    getAllQuestions,
-    getDataForEdit,
-    submitAnswer
-} from '../controllers/qa-controller.js'
-
+import Token from '../middleware/verifyToken.js'
+import QaController from '../controllers/qa-controller.js'
+import { use } from '../service/response.js'
 const router = Router()
 
-router.post('/upload-question', verifyToken, uploadQuestion)
-router.get('/my-questions/:id', verifyToken, getMyQuestions)
-router.get('/all-questions', [verifyToken, isProfessor], getAllQuestions)
-router.get('/answered-question/:id', [verifyToken, isProfessor], getDataForEdit)
+const qaController = new QaController()
+const tokenService = new Token()
 
-router.put('/answer', verifyToken, submitAnswer)
+router.post('/upload-question',
+    [tokenService.verifyToken], use(qaController.uploadQuestion))
+router.get('/my-questions/:id',
+    [tokenService.verifyToken], use(qaController.getMyQuestions))
+router.get('/all-questions',
+    [tokenService.verifyToken, tokenService.isProfessor], use(qaController.getAllQuestions))
+router.get('/answered-question/:id',
+    [tokenService.verifyToken, tokenService.isProfessor], use(qaController.getDataForEdit))
+
+router.put('/answer',
+    [tokenService.verifyToken], use(qaController.submitAnswer))
 
 export default router

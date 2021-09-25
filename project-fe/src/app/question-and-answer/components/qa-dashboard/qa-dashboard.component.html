@@ -1,7 +1,7 @@
 <div class="page-container">
+    <button *ngIf="!isStudent" class="edit-button" mat-raised-button (click)="triggerEditMyAnswerPage()">Edit my
+        answer</button>
     <div *ngIf="!isAnswerEditPage">
-        <button *ngIf="!isStudent" class="edit-button" mat-raised-button (click)="triggerEditMyAnswerPage()">Edit my
-            answer</button><br><br>
         <div>
             <table>
                 <tr>

@@ -1,13 +1,18 @@
 import { Router } from 'express'
-import { userLogin, forgotPassword, updatePassword, verifyUser } from '../controllers/auth-controller.js'
-import { verifyToken } from '../middleware/verifyToken.js'
+import AuthController from '../controllers/auth-controller.js'
+import Token from '../middleware/verifyToken.js'
+import { use } from '../service/response.js'
 
 const router = Router()
 
-router.post('/login', userLogin)
-router.post('/update-password', verifyToken, updatePassword)
+const tokenService = new Token()
 
-router.get('/verifyUser/:id', verifyUser)
-router.post('/forgot-password', forgotPassword)
+const authController = new AuthController()
 
-export default router 
+router.post('/login', use(authController.userLogin))
+router.put('/update-password', tokenService.verifyToken, use(authController.updatePassword))
+
+router.get('/verifyUser/:id', use(authController.verifyUser))
+router.put('/forgot-password', use(authController.forgotPassword))
+
+export default router

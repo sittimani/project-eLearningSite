@@ -26,7 +26,7 @@ export class DashboardComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getPendingProfessor()
+    this.getPendingProfessor();
   }
 
   private getPendingProfessor(): void {
@@ -61,7 +61,7 @@ export class DashboardComponent implements OnInit {
     };
     this.dialog.setDetails("Approve", "Deny", "Select button to update user status?");
     this.dialog.openDialog().afterClosed().subscribe((choice: boolean) => {
-      value["verified"] = choice ?  "approved" : choice === false ? "denied" : "pending";
+      value["verified"] = choice ? "approved" : choice === false ? "denied" : "pending";
       if (value["verified"] !== "pending")
         this.updateStatus(value);
     })

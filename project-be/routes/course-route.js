@@ -1,33 +1,28 @@
 import { Router } from 'express'
-import {
-    getAvailableCourse,
-    getAllTopics,
-    getParticularTopic,
-    uploadCourse,
-    updateParticularTopic,
-    picUpload,
-    deleteEntireCourse,
-    deleteParticularTopic
-} from '../controllers/course-controller.js'
-import * as upload from '../middleware/uploads.js'
-import{
-    verifyToken,
-    isProfessor,
-    isAdmin
-} from '../middleware/verifyToken.js'
-
-const uploads = upload.upload
+import CourseController from '../controllers/course-controller.js'
+import { upload as uploads } from '../middleware/uploads.js'
+import Token from '../middleware/verifyToken.js'
+import { use } from "../service/response.js"
 
 const router = Router()
-router.get('/course', verifyToken, getAvailableCourse)
-router.get('/course-topic/:name', verifyToken, getAllTopics)
+const courseController = new CourseController()
+const tokenService = new Token()
 
-router.post('/topics', verifyToken, getParticularTopic)
-router.put('/update-topic', [verifyToken, isProfessor], updateParticularTopic)
-router.post('/picture', [uploads.single('avator'), verifyToken], picUpload)
-router.post('/upload-course', [verifyToken, isProfessor], uploadCourse)
+router.get('/course',
+    [tokenService.verifyToken], use(courseController.getAvailableCourse))
+router.get('/course-topic/:name',
+    [tokenService.verifyToken], use(courseController.getAllTopics))
 
-router.delete('/delete-topic', [verifyToken, isAdmin], deleteParticularTopic)
-router.delete('/delete-course', [verifyToken, isAdmin], deleteEntireCourse)
+router.put('/update-topic',
+    [tokenService.verifyToken, tokenService.isProfessor], use(courseController.updateParticularTopic))
+router.post('/picture',
+    [uploads.single('avator'), tokenService.verifyToken], use(courseController.picUpload))
+router.post('/upload-course',
+    [tokenService.verifyToken, tokenService.isProfessor], use(courseController.uploadCourse))
+
+router.delete('/delete-topic',
+    [tokenService.verifyToken, tokenService.isAdmin], use(courseController.deleteParticularTopic))
+router.delete('/delete-course',
+    [tokenService.verifyToken, tokenService.isAdmin], use(courseController.deleteEntireCourse))
 
 export default router

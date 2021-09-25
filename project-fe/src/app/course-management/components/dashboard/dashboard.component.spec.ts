@@ -2,8 +2,8 @@ import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { RouterTestingModule } from "@angular/router/testing";
 import { ToastrModule } from "ngx-toastr";
-import { userAuth, UserInformation } from "src/app/core";
 import { MaterialModule } from "src/app/material/material.module";
+import { UserInformation, userAuth } from "src/app/user-management";
 
 import { DashboardComponent } from "./dashboard.component";
 

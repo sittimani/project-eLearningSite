@@ -1,8 +1,8 @@
 export interface Roles {
     _id?: string,
-    readDocument: boolean,
-    createDocument: boolean,
-    updateDocument: boolean,
+    readDocument: boolean | false,
+    createDocument: boolean | false,
+    updateDocument: boolean | false,
     createCourse?: boolean,
     deleteCourse?: boolean,
     menu?: [Menu]

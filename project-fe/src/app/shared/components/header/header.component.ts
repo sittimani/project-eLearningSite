@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, TemplateRef } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { UserErrors } from "src/app/core";
@@ -28,10 +28,10 @@ export class HeaderComponent implements OnInit {
     private qaService: QaService
   ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.auth.userLoggedIn$.subscribe((isUserLoggedIn: boolean) => {
       this.isLoggedIn = isUserLoggedIn;
-      this.menu = []
+      this.menu = [];
       if (isUserLoggedIn) {
         const userDetails: UserDetails = this.auth.getUserDetails();
         this.userName = userDetails.name;
@@ -65,13 +65,13 @@ export class HeaderComponent implements OnInit {
           studentName: this.userName,
           question: this.qaService.question,
           isAnswered: false
-        }
+        };
         this.saveQuestion(JSON.stringify(value));
       }
     })
   }
 
-  saveQuestion(value: string) {
+  private saveQuestion(value: string) {
     if (this.qaService.question !== "") {
       this.qaService.uploadQuestion(value).subscribe((response: string) => {
         this.toastr.success(response, "Success");
@@ -81,10 +81,14 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  logout() {
+  public logout() {
     this.auth.logOut();
     this.router.navigate(["login"]);
     this.roles.createCourse = false;
+  }
+
+  public closeSideNav() {
+    this.isOpen = !this.isOpen;
   }
 
 }

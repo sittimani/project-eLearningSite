@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators, FormControl } from "@angular/forms";
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
-import { UserErrors } from "src/app/core";
+import { ErrorMessage, UserErrors } from "src/app/core";
 import { AuthService, LoginCreditionals, LoginResponse } from "../..";
 
 @Component({
@@ -16,7 +16,9 @@ export class LoginComponent implements OnInit {
   public isHide = true;
   public title = "Login Form";
   public loginForm: FormGroup;
-  public isForgotPassword: boolean = false;
+  public isForgotPassword = false;
+  public userErrors = UserErrors;
+  public errorMessage: ErrorMessage;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -28,6 +30,7 @@ export class LoginComponent implements OnInit {
       email: ["", [Validators.required, Validators.email]],
       password: ["", [Validators.required, Validators.minLength(8)]]
     })
+    this.errorMessage = new ErrorMessage()
   }
 
   ngOnInit(): void {
@@ -46,15 +49,15 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       let value: LoginCreditionals = this.loginForm.value;
       this.auth.loginAsUser(value).subscribe((response: LoginResponse) => {
-        this.setToken(response);
+        this.saveToken(response);
       })
     } else {
       this.toastr.error(UserErrors.InvalidForm, "Error");
     }
   }
 
-  private setToken(responseData: LoginResponse): void {
-    this.auth.setToken(responseData);
+  private saveToken(responseData: LoginResponse): void {
+    this.auth.saveToken(responseData);
     this.router.navigate(["home"]);
     this.toastr.success("Logged in successfully", "Success");
   }

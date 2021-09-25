@@ -27,6 +27,6 @@ export class UserProfileService {
   }
 
   public userPermission(value: UpdatePermission): Observable<string> {
-    return this.http.post<string>(this.serverAddress + "update-permission", value);
+    return this.http.put<string>(this.serverAddress + "update-permission", value);
   }
 }

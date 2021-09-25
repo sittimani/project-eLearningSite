@@ -1,9 +1,11 @@
 import { Router } from 'express'
-import {
-    register
-} from '../controllers/register-controller.js'
+import RegisterController from '../controllers/register-controller.js'
+import { use } from '../service/response.js'
 
 const router = Router()
-router.post('/register', register)
+
+const registerController = new RegisterController()
+
+router.post('/register', use(registerController.register))
 
 export default router 

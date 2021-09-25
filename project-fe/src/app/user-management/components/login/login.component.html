@@ -10,8 +10,8 @@
           <input matInput formControlName="email">
         </mat-form-field>
         <span class="error-message" *ngIf="getField('email')?.invalid && getField('email')?.touched">
-          <span class="error-message" *ngIf="getField('email').errors?.required">Email is required</span>
-          <span class="error-message" *ngIf="getField('email').errors?.email">Invalid Email Addess</span>
+          <span class="error-message" *ngIf="getField('email').errors?.required">{{errorMessage.requiredError('Email')}}</span>
+          <span class="error-message" *ngIf="getField('email').errors?.email">{{userErrors.InvalidEmail}}</span>
         </span>
 
         <mat-form-field appearance="outline" *ngIf="!isForgotPassword">
@@ -21,10 +21,12 @@
             <mat-icon>{{isHide ? 'visibility_off' : 'visibility'}}</mat-icon>
           </button>
         </mat-form-field>
-        
+
         <span class="error-message" *ngIf="getField('password')?.invalid && getField('password')?.touched">
-          <span class="error-message" *ngIf="getField('password').errors?.required">password is required</span>
-          <span class="error-message" *ngIf="getField('password').errors?.minlength">Minimum 8 letters required</span>
+          <span class="error-message"
+            *ngIf="getField('password').errors?.required">{{errorMessage.requiredError('password')}}</span>
+          <span class="error-message"
+            *ngIf="getField('password').errors?.minlength">{{errorMessage.minLengthError('Password', 8)}}</span>
         </span>
 
         <button mat-raised-button type="button" color="primary" (click)="logIn()"
@@ -38,5 +40,3 @@
     </mat-card-content>
   </mat-card>
 </div>
-
-

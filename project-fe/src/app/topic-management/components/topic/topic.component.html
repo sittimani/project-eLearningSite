@@ -1,5 +1,8 @@
-<span *ngIf="isNoCourse" class="no-item">Invalid Course Name !!!</span>
-<div *ngIf="!isNoCourse" fxFlex="100%" fxFlexFill class="page-container">
+<div class="page-container" *ngIf="!isNoCourse">
+    <span class="no-item">Invalid Course Name !!!</span>
+</div>
+
+<div *ngIf="isNoCourse" fxFlex="100%" fxFlexFill class="page-container">
     <mat-card>
         <mat-card-header fxLayoutAlign="center">
             <mat-card-title>{{courseName | uppercase}}</mat-card-title>

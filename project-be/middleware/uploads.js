@@ -12,7 +12,7 @@ const stroage = multer.diskStorage({
     }
 })
 
-const upload = multer({
+export const upload = multer({
     storage: stroage,
     fileFilter: (req, file, callback) => {
         if (file.mimetype == 'image/png' || file.mimetype == 'image/jpg') {
@@ -25,5 +25,3 @@ const upload = multer({
         fileSize: 1024 * 1024 * 2
     }
 })
-
-export { upload }

@@ -17,14 +17,9 @@ import {
 
 export class AuthService {
 
-  private serverAddress = environment.serverAddress
+  private serverAddress = environment.serverAddress;
   private userLoggedIn: BehaviorSubject<boolean>;
   public userLoggedIn$: Observable<boolean>
-  public role: Roles = {
-    readDocument: false,
-    createDocument: false,
-    updateDocument: false
-  };
 
   constructor(private http: HttpClient) {
     this.userLoggedIn = new BehaviorSubject(Boolean(false));

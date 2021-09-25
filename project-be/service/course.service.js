@@ -5,9 +5,7 @@ import { statusText } from '../constants/status-text.js'
 export default class Course {
 
     async allCourse() {
-
         const data = await courseModel.find({}, { updatedAt: 0, createdAt: 0 })
-
         if (data)
             return { statusCode: statusCode.ok, message: data }
         return { statusCode: statusCode.ok, message: [] }
@@ -35,9 +33,8 @@ export default class Course {
     async createCourse(body, overview) {
         const { courseName, url, description } = body
         const data = await courseModel.findOne({ courseName: courseName })
-        if (data !== null) {
+        if (data !== null)
             return { statusCode: statusCode.alreadyExists, message: statusText.alreadyExists }
-        }
         const object = {
             courseName: courseName,
             overview: {

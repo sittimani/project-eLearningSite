@@ -62,7 +62,6 @@ describe("TopicComponent", () => {
     expect(component.keysDisplayed).toEqual(keys)
   })
 
-
   it("should return false", () => {
     expect(component.skipKey("id")).toBe(false);
   })

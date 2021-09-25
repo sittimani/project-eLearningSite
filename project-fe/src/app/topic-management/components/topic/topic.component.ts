@@ -40,19 +40,24 @@ export class TopicComponent implements OnInit {
 
   ngOnInit(): void {
     this.courseName = this.currentRoute.snapshot.params["name"];
-    this.currentRoute.data.subscribe((response: Data) => {
-      const data = response.data;
-      if (data !== undefined && data[0] !== undefined && data.length) {
-        this.reStructureData(data[0]);
-        this.isNoCourse = true;
-      }
-    })
+    this.getCourse();
     const userDetails = this.auth.getUserDetails();
     if (userDetails)
       this.roles = userDetails.role;
   }
 
+  private getCourse() {
+    this.isNoCourse = false;
+    this.topic.getCourse(this.courseName).subscribe((response: Topic) => {
+      if (response !== undefined && response[0] !== undefined && response.length) {
+        this.reStructureData(response[0]);
+        this.isNoCourse = true;
+      }
+    })
+  }
+
   public reStructureData(object: Topic): void {
+    this.topicsDisplayed = [];
     this.keys = Object.keys(object);
     this.keys.forEach(key => {
       if (key === "overview") {
@@ -81,9 +86,7 @@ export class TopicComponent implements OnInit {
       if (choice) {
         this.topic.deleteTopic(this.courseName, topicName).subscribe((response: string) => {
           this.toastr.success(response, "Success");
-          this.router.navigateByUrl("blank").then(() => {
-            this.router.navigateByUrl("topic/" + this.courseName);
-          });
+          this.getCourse();
         });
       }
     });

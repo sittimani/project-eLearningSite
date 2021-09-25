@@ -23,6 +23,8 @@
 <ng-template #navigationItems>
     <a (click)="takeQuestion()" *ngIf="isLoggedIn && isStudent">Ask
         Question</a>
+
+    
     <span *ngFor="let item of menu">
         <a [routerLink]="item.link">{{item.name}}</a>
     </span>

@@ -61,6 +61,7 @@ export class QaDashboardComponent implements OnInit {
     })
   }
 
+
   public fillAnswer(element: QAModel) {
     if (!element.isAnswered) {
       element.answer = "Yet to be answered";

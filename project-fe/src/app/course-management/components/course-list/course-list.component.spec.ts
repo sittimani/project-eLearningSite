@@ -2,7 +2,9 @@ import { HttpClientModule } from "@angular/common/http";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { RouterTestingModule } from "@angular/router/testing";
 import { ToastrModule } from "ngx-toastr";
+import { Observable } from "rxjs";
 import { MaterialModule } from "src/app/material/material.module";
+import { Topic } from "src/app/topic-management";
 import { AuthService } from "src/app/user-management";
 
 import { CourseListComponent } from "./course-list.component";

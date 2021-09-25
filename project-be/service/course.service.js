@@ -5,7 +5,9 @@ import { statusText } from '../constants/status-text.js'
 export default class Course {
 
     async allCourse() {
+
         const data = await courseModel.find({}, { updatedAt: 0, createdAt: 0 })
+
         if (data)
             return { statusCode: statusCode.ok, message: data }
         return { statusCode: statusCode.ok, message: [] }
